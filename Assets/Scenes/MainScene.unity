@@ -919,7 +919,7 @@ GameObject:
   - component: {fileID: 1215276438}
   - component: {fileID: 1215276437}
   m_Layer: 0
-  m_Name: Head (Model 1)
+  m_Name: CubeHanHan (Model 1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
