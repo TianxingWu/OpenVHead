@@ -61,3 +61,6 @@ crashlytics-build.properties
 # Notes
 Notes.txt
 
+# vscode settings
+.vscode/*
+
