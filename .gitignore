@@ -9,6 +9,8 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
+# vscode settings
+/.vscode/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
@@ -61,6 +63,5 @@ crashlytics-build.properties
 # Notes
 Notes.txt
 
-# vscode settings
-.vscode/*
+
 
