@@ -2,6 +2,9 @@
 
 public class HeadController : MonoBehaviour
 {
+    // Model selector
+    public int modelSelect = 1;
+
     public GameObject theHead;
     public GameObject theLeftEye;
     public GameObject theRightEye;
@@ -23,14 +26,33 @@ public class HeadController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //位姿变化 Apply position and rotation changes
-        theHead.transform.SetPositionAndRotation(headPos, headRot);
-        // For Debug only
-        //Debug.Log(headRot);
+        switch(modelSelect)
+        {
+            case 1:// Model 1
+            {
+                //Apply position and rotation changes 位姿变化
+                theHead.transform.SetPositionAndRotation(headPos, headRot);
+                // For Debug only
+                //Debug.Log(headRot);
 
-        //形变  Apply facial expression shapes changes
-        theLeftEye.transform.localScale = leftEyeShape;
-        theRightEye.transform.localScale = rightEyeShape;
-        theMouth.transform.localScale = mouthShape;
+                //Apply facial expression shapes changes 形变
+                theLeftEye.transform.localScale = leftEyeShape;
+                theRightEye.transform.localScale = rightEyeShape;
+                theMouth.transform.localScale = mouthShape;
+                break;
+            }
+            case 2:// Model 2
+            {
+                //Apply rotation changes 位姿变化
+                theHead.transform.rotation = headRot;
+                break;
+            }
+            default:
+            {
+                Debug.Log("Please Select a proper Model number.");
+                break;
+            }
+        }
+        
     }
 }
