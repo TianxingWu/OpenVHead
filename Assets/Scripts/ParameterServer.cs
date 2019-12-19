@@ -9,6 +9,13 @@ public class ParameterServer : MonoBehaviour
     // Model selector
     public int modelSelect = 1;
 
+    // Kalman objects
+    KalmanObject W_Kalman = new KalmanObject();
+    KalmanObject X_Kalman = new KalmanObject();
+    KalmanObject Y_Kalman = new KalmanObject();
+    KalmanObject Z_Kalman = new KalmanObject();
+
+
     // Control objects
     ControlObject LeftEyeControl = new ControlObject();
     ControlObject RightEyeControl = new ControlObject();
@@ -28,8 +35,7 @@ public class ParameterServer : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        
+    {  
         switch(modelSelect)
         {
             case 1:// Initialization for Model 1
@@ -90,13 +96,13 @@ public class ParameterServer : MonoBehaviour
                 getmouthShape = new Vector3(0.45f, 0.03f, 0.2f);
 
                 // Initialize control objects
-                RightEyeControl.M = 4;
-                RightEyeControl.ALPHA = 0.8f;//test...
+                RightEyeControl.M = 2;
+                RightEyeControl.ALPHA = 0.8f;
                 RightEyeControl.KP = 0.04f;
                 RightEyeControl.KD = 1;   
 
-                LeftEyeControl.M = 4;
-                LeftEyeControl.ALPHA = 0.8f;//test...
+                LeftEyeControl.M = 2;
+                LeftEyeControl.ALPHA = 0.8f;
                 LeftEyeControl.KP = 0.04f;
                 LeftEyeControl.KD = 1;
 
@@ -145,6 +151,12 @@ public class ParameterServer : MonoBehaviour
             Debug.Log("No Parameter Received.");
         }
 
+        
+        getheadRot.w = W_Kalman.kalman_filter(getheadRot.w, 8e-4f,5e-4f);
+        getheadRot.x = X_Kalman.kalman_filter(getheadRot.x, 8e-4f,5e-4f);
+        getheadRot.y = Y_Kalman.kalman_filter(getheadRot.y, 8e-4f,5e-4f);
+        getheadRot.z = Z_Kalman.kalman_filter(getheadRot.z, 8e-4f,5e-4f);
+        
         // Select a model
         switch(modelSelect)
         {
@@ -200,7 +212,7 @@ public class ParameterServer : MonoBehaviour
             {
                 // Facial expression control!
                 // 1. Right Eye
-                if(1/getrightEyeShape[1]>20)// Right eye closed //注意参数匹配关系：BlendShapesController -> 眼形变 正常
+                if(getrightEyeShape[1]<0.05f)// Right eye closed //注意参数匹配关系：BlendShapesController -> 眼形变 正常
                 {
                     getrightEyeShape[1] = 0.01f;
                 }
@@ -209,7 +221,7 @@ public class ParameterServer : MonoBehaviour
                     getrightEyeShape[1] = RightEyeControl.control(BlendShapesController.rightEyeShape[1], getrightEyeShape[1]);
                 }
                 // 2. Left Eye
-                if(1/getleftEyeShape[1]>20)// Left eye closed
+                if(getleftEyeShape[1]<0.05f)// Left eye closed
                 {
                     getleftEyeShape[1] = 0.01f;
                 }
@@ -225,10 +237,10 @@ public class ParameterServer : MonoBehaviour
 
                 // Update global variables 对全局变量进行更新
                 // 1. Update rotation 更新姿态 
-                HeadController.headRot.w = (float)(Math.Cos(1.74)*getheadRot.w -  Math.Sin(1.74)*getheadRot.x);
-                HeadController.headRot.x = (float)(Math.Cos(1.74)*getheadRot.x +  Math.Sin(1.74)*getheadRot.w);
-                HeadController.headRot.y = -(float)(Math.Cos(1.74)*getheadRot.y -  Math.Sin(1.74)*getheadRot.z);
-                HeadController.headRot.z = -(float)(Math.Cos(1.74)*getheadRot.z +  Math.Sin(1.74)*getheadRot.y);
+                HeadController.headRot.w = (float)(Math.Cos(1.6)*getheadRot.w -  Math.Sin(1.6)*getheadRot.x);
+                HeadController.headRot.x = (float)(Math.Cos(1.6)*getheadRot.x +  Math.Sin(1.6)*getheadRot.w);
+                HeadController.headRot.y = -(float)(Math.Cos(1.6)*getheadRot.y -  Math.Sin(1.6)*getheadRot.z);
+                HeadController.headRot.z = -(float)(Math.Cos(1.6)*getheadRot.z +  Math.Sin(1.6)*getheadRot.y);
                 // 2. Update facial expression shapes 更新形状 
                 BlendShapesController.leftEyeShape = getleftEyeShape;
                 BlendShapesController.rightEyeShape = getrightEyeShape;
@@ -305,14 +317,14 @@ class ControlObject
                 break;
 
             case 2: // Many bugs !!!!!!!!
-                if(X_D < THRESH && X > THRESH)
+                if(X_D < THRESH && x > THRESH)
                 {
                     isBlinking = true;
                     F = -1;
                 }
                 else if(isBlinking == true)
                 {
-                    if(X>0.001f)
+                    if(x>0.001f)
                     {
                         isBlinking = true;
                         F = -1;
@@ -347,5 +359,20 @@ class ControlObject
         }
         
         return x;
+    }
+}
+
+class KalmanObject
+{
+    public float K;
+    public float X = 0;
+    public float P = 0.1f;
+
+    public float kalman_filter(float input,float Q,float R)
+    {
+        K = P / (P + R);
+        X = X + K * (input - X);
+        P = P - K * P + Q;
+        return X;
     }
 }

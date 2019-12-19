@@ -23,31 +23,50 @@ public class BlendShapesController : MonoBehaviour
     void Update ()
     {
         //左眼形变
-        if (1/leftEyeShape[1] < 100f) 
-        {
-            if(1/leftEyeShape[1] > 20f)//闭眼 //参数匹配：ParameterServer -> 参数控制!闭眼
+        // if (1/leftEyeShape[1] < 100f) 
+        // {
+            if(leftEyeShape[1]<0.05f)//闭眼 //参数匹配：ParameterServer -> 参数控制!闭眼
             {
                 skinnedMeshRenderer.SetBlendShapeWeight (2, 100);
             }
-            else//正常
+            else if(leftEyeShape[1]<0.1f)
             {
-                skinnedMeshRenderer.SetBlendShapeWeight (2, 1/leftEyeShape[1]);
-                Debug.Log(leftEyeShape[1]);
+                skinnedMeshRenderer.SetBlendShapeWeight (2, 5/leftEyeShape[1]);
+                
             }
-        }
-        
-        //右眼形变
-        if (1/rightEyeShape[1] < 100f) 
-        {
-            if(1/rightEyeShape[1] > 20f)
+            else if(leftEyeShape[1]<0.2f)
             {
-                skinnedMeshRenderer.SetBlendShapeWeight (3, 100);
+                skinnedMeshRenderer.SetBlendShapeWeight (2, -500*leftEyeShape[1]+100);  
+                //Debug.Log(leftEyeShape[1]);
             }
             else
             {
-                skinnedMeshRenderer.SetBlendShapeWeight (3, 1/rightEyeShape[1]);
+                skinnedMeshRenderer.SetBlendShapeWeight (2, 0);
             }
-        }
+        // }
+        
+        //右眼形变
+        // if (1/rightEyeShape[1] < 100f) 
+        // {
+            if(rightEyeShape[1]<0.05f)
+            {
+                skinnedMeshRenderer.SetBlendShapeWeight (3, 100);
+            }
+            else if(rightEyeShape[1]<0.1f)
+            {
+                skinnedMeshRenderer.SetBlendShapeWeight (3, 5/rightEyeShape[1]);
+                
+            }
+            else if(rightEyeShape[1]<0.2f)
+            {
+                
+                skinnedMeshRenderer.SetBlendShapeWeight (3, -500*rightEyeShape[1]+100);
+            }
+            else
+            {
+                skinnedMeshRenderer.SetBlendShapeWeight (3, 0);
+            }
+        // }
 
         //惊愕
         if(rightEyeShape[1]>0.25f)//惊愕 0.25-0.35线性

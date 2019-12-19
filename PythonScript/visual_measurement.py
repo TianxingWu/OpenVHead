@@ -181,7 +181,7 @@ if __name__ == '__main__':
     
 
     open_time = time.time()
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("2434test.mp4")
     while (cap.isOpened()):
         start_time = time.time()
         
