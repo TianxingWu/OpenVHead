@@ -54,7 +54,7 @@ This system now has 2 character models with customized parameter settings. To ch
 </p>
 
 ### Debug mode
-To make it easier to tune the control parameters, a debug mode is offered to visualize the eyes' openning value for the Kizuna AI model. You can enable this mode by unhiding the child GameObjects of Canvas: RightEyeData and LeftEyeData. You would then see the real time plotting as follows:
+To make it easier to tune the control parameters, a debug mode is offered to visualize the eyes' openness value for the Kizuna AI model. You can enable this mode by unhiding the child GameObjects of Canvas: RightEyeData and LeftEyeData. You would then see the real time plotting as follows:
 
 <p align="center">
     <img width="350" img src="./Doc/debug_mode.png">

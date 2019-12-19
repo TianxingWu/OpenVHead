@@ -14,7 +14,7 @@ public class DrawData : MonoBehaviour
     private List<int> data;
     private Color[] pixels;
     //private Color GraphBackground = new Color(0.3f, 0.4f, 0.6f, 0.8f);
-    private Color GraphBackground = new Color(1, 1, 1, 1);
+    private Color GraphBackground = new Color(0, 1, 0, 1);
     private Color LineColor = new Color(1.0f, 0.0f, 0.0f, 0.1f);
     
 
