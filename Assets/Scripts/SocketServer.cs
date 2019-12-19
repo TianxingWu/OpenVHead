@@ -24,7 +24,7 @@ public class SocketServer : MonoBehaviour
         {
             CreateNoWindow = true,
             UseShellExecute = true,
-            //WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
+            WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
         };
 
         System.Diagnostics.Process.Start(processInfo);
