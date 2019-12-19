@@ -28,8 +28,8 @@ The detailed documentation for the method is still under construction.
 - Python 3.6.x
 - Unity 2018.4.x
 #### Package dependencies
-- opencv-python 3.4.0
-- dlib 19.7.0
+- opencv-python (tested with version 3.4.0)
+- dlib (tested with version 19.7.0)
 
 
 ## Usage
@@ -70,15 +70,14 @@ WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
 Sometimes the Python script running in the background could fail to terminate after releasing the Play button. If this happens, navigate to the "Output" window (the one that contains your face) and press 'ESC', and the thread would be stopped manually. 
 
 ## Acknowledgement
-The overall structure of the head pose estimation part is adapted from [Head Pose Estimation using OpenCV and Dlib](https://www.learnopencv.com/head-pose-estimation-using-opencv-and-dlib/) by Satya Mallick and [this blog](https://blog.csdn.net/yuanlulu/article/details/82763170) by yuanlulu. 
+The overall structure of the head pose estimation part is adapted from [Head Pose Estimation using OpenCV and Dlib](https://www.learnopencv.com/head-pose-estimation-using-opencv-and-dlib/) by Satya Mallick and [this blog](https://blog.csdn.net/yuanlulu/article/details/82763170) by yuanlulu.
 
-The Kizuna AI 3D model (Model 2) is converted from the PMX model offered by Tomitake on Kizuna AI's [official website](https://kizunaai.com/) &copy;KizunaAI . It is only used as a demo for research in this project. Further information about the permission for the use of this model should be referred to the original site [here](https://kizunaai.com/download/).
+The model file 'shape_predictor_68_face_landmarks.dat' for face landmarks detection was created by [Davis King](https://github.com/davisking) for part of the dlib example programs, and was trained on the iBUG 300-W face landmark dataset. Note that the license for the iBUG 300-W dataset excludes commercial use. So you should contact Imperial College London to find out if it's OK for you to use this model file in a commercial product.
+
+The Kizuna AI 3D model (Model 2) is converted from the PMX model offered by Tomitake on Kizuna AI's [official website](https://kizunaai.com/) &copy;KizunaAI . It is only used as a demo for research in this project. Further information about the term of use of this model should be referred to the original site [here](https://kizunaai.com/download/).
 
 ## What's Next
 - Blinking function update
 - Gaze tracking
 - Facial expression classification
 - Physical engine for other components: hair, headwear(piukupiuku), etc.
-
-
-Still Updating ...
