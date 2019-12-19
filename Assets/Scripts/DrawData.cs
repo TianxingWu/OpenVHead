@@ -13,7 +13,8 @@ public class DrawData : MonoBehaviour
     private int graphHeight = 500;
     private List<int> data;
     private Color[] pixels;
-    private Color GraphBackground = new Color(0.3f, 0.4f, 0.6f, 0.8f);
+    //private Color GraphBackground = new Color(0.3f, 0.4f, 0.6f, 0.8f);
+    private Color GraphBackground = new Color(1, 1, 1, 1);
     private Color LineColor = new Color(1.0f, 0.0f, 0.0f, 0.1f);
     
 
@@ -30,7 +31,7 @@ public class DrawData : MonoBehaviour
 
         for (int i = 0; i < pixels.Length; i++)
         {
-            pixels[i] = new Color(0.3f, 0.4f, 0.6f, 0.3f);
+            pixels[i] = GraphBackground;
         }
         m_texture.SetPixels(pixels);
         m_texture.Apply();

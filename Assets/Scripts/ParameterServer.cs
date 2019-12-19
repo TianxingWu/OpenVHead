@@ -152,10 +152,10 @@ public class ParameterServer : MonoBehaviour
         }
 
         
-        getheadRot.w = W_Kalman.kalman_filter(getheadRot.w, 8e-4f,5e-4f);
-        getheadRot.x = X_Kalman.kalman_filter(getheadRot.x, 8e-4f,5e-4f);
-        getheadRot.y = Y_Kalman.kalman_filter(getheadRot.y, 8e-4f,5e-4f);
-        getheadRot.z = Z_Kalman.kalman_filter(getheadRot.z, 8e-4f,5e-4f);
+        getheadRot.w = W_Kalman.kalman_filter(getheadRot.w, 8e-3f,5e-4f);
+        getheadRot.x = X_Kalman.kalman_filter(getheadRot.x, 8e-3f,5e-4f);
+        getheadRot.y = Y_Kalman.kalman_filter(getheadRot.y, 8e-3f,5e-4f);
+        getheadRot.z = Z_Kalman.kalman_filter(getheadRot.z, 8e-3f,5e-4f);
         
         // Select a model
         switch(modelSelect)

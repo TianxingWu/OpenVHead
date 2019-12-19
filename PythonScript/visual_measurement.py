@@ -79,7 +79,7 @@ def get_feature_parameters(landmarks):
 
 
 # Get largest face
-def _largest_face(dets):
+def get_largest_face(dets):
     if len(dets) == 1:
         return 0
 
@@ -104,7 +104,7 @@ def get_image_points(img):
     if 0 == len( dets ):
         print( "ERROR: found no face" )
         return -1, None
-    largest_index = _largest_face(dets)
+    largest_index = get_largest_face(dets)
     face_rectangle = dets[largest_index]
 
     landmark_shape = predictor(img, face_rectangle)

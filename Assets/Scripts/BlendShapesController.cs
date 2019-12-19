@@ -94,7 +94,7 @@ public class BlendShapesController : MonoBehaviour
         }
         else
         {
-            skinnedMeshRenderer.SetBlendShapeWeight (mouthLenNum, 0);
+            //skinnedMeshRenderer.SetBlendShapeWeight (mouthLenNum, 0);
         }
     }
 }
