@@ -28,16 +28,38 @@ boxPoints3D = np.array(([500., 500., 500.],
                          [500., -500., -500.]))
 boxPoints2D = np.zeros((1,1,8,2))
 # parameters for mean filter
-widowlen = 8
-queue3D_points = np.zeros((widowlen,68,2))
+windowlen_1 = 8
+queue3D_points = np.zeros((windowlen_1,68,2))
+
+windowlen_2 =5
+queue1D = np.zeros(windowlen_2)
+
+# pamameters for kalman filter
+XX = 0
+PP = 0.01
 
 # Smooth filter
-def mean_filter(landmarks_orig):
-    for i in range(widowlen-1):
+def mean_filter_for_landmarks(landmarks_orig):
+    for i in range(windowlen_1-1):
         queue3D_points[i,:,:] = queue3D_points[i+1,:,:]
-    queue3D_points[widowlen-1,:,:] = landmarks_orig
+    queue3D_points[windowlen_1-1,:,:] = landmarks_orig
     landmarks = queue3D_points.mean(axis = 0)
     return landmarks
+
+def mean_filter_simple(input):
+    for i in range(windowlen_2-1):
+        queue1D[i] = queue1D[i+1]
+    queue1D[windowlen_2-1] = input
+    output = queue1D.mean()
+    return output
+
+def kalman_filter(input, Q, R):
+    global XX
+    global PP
+    K = PP / (PP + R)
+    XX = XX + K * (input - XX)
+    PP = PP - K * PP + Q
+    return XX
 
 # Format convert      
 def landmarks_to_np(landmarks, dtype="int"):
@@ -148,6 +170,10 @@ def get_pose_estimation(img_size, image_points ):
     imagePoints = np.ascontiguousarray(image_points[:,:2]).reshape((6,1,2))
     (success, rotation_vector, translation_vector) = cv2.solvePnP(model_points, imagePoints, camera_matrix, dist_coeffs, flags=cv2.SOLVEPNP_DLS)
     
+    ############################
+    # rotation_vector[0] = kalman_filter(rotation_vector[0], 0.1, 0.01)
+    # rotation_vector[1] = kalman_filter(rotation_vector[1], 0.1, 0.01)
+    # rotation_vector[2] = kalman_filter(rotation_vector[2], 0.1, 0.01)
 
     print("Rotation Vector:\n {}".format(rotation_vector))
     print("Translation Vector:\n {}".format(translation_vector))
@@ -157,6 +183,7 @@ def get_pose_estimation(img_size, image_points ):
 def get_quaternion(rotation_vector):
         # calculate rotation angles
     theta = cv2.norm(rotation_vector, cv2.NORM_L2)
+    # theta = mean_filter_simple(theta)
     
     # transformed to quaterniond
     w = math.cos(theta / 2)
@@ -207,7 +234,7 @@ if __name__ == '__main__':
         
         # Compute feature parameters of facial expressions (eyes, mouth)
         landmarks_orig = landmarks_to_np(landmark_shape) # convert format
-        landmarks = mean_filter(landmarks_orig) # apply smooth filter
+        landmarks = mean_filter_for_landmarks(landmarks_orig) # apply smooth filter
         leftEyeWid, rightEyewid, mouthWid,mouthLen = get_feature_parameters(landmarks_orig)
         parameters_str = 'leftEyeWid:{}, rightEyewid:{}, mouthWid:{}, mouthLen:{}'.format(leftEyeWid, rightEyewid, mouthWid, mouthLen)
         print(parameters_str)
