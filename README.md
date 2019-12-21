@@ -54,11 +54,13 @@ This system now has two character models with customized parameter settings. To 
 </p>
 
 ### Debug mode
-To make it easier to tune the control parameters, a debug mode is offered to visualize the eyes' openness value for the Kizuna AI model. You can enable this mode by unhiding the child GameObjects of Canvas: RightEyeData and LeftEyeData. You would then see the real time plotting as follows:
+To make it easier to tune the control parameters, a debug mode is offered to visualize some of them. You can enable this mode by unhiding the child GameObjects of Canvas: RightData and LeftData. You would then see the real time plotting as follows:
 
 <p align="center">
     <img width="350" img src="./Figures/debug_mode.png">
 </p>
+
+The displayed data is set as the eyes' openness value for the Kizuna AI model by default. You can change the data by modify the "Data Select" number in the Inspector window of each aforementioned GameObject.
 
 If you want to monitor the output of the Python Script, comment the following line in [SocketServer.cs](\Assets\Scripts\SocketServer.cs)
 
@@ -77,7 +79,7 @@ The model file 'shape_predictor_68_face_landmarks.dat' for face landmarks detect
 The Kizuna AI 3D model (Model 2) is converted from the PMX model offered by Tomitake on Kizuna AI's [official website](https://kizunaai.com/) &copy;KizunaAI . It is only used as a demo for research in this project. Further information about the term of use of this model should be referred to the original site [here](https://kizunaai.com/download/).
 
 ## What's Next
-- Blinking function update
-- Gaze tracking
-- Facial expression classification
-- Physical engine for other components: hair, headwear(piukupiuku), etc.
+- [x] Blinking function update
+- [ ] Gaze tracking
+- [ ] Facial expression classification
+- [ ] Physical engine for other components: hair, headwear(piukupiuku), etc.
