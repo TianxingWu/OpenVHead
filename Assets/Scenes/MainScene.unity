@@ -837,7 +837,7 @@ GameObject:
   - component: {fileID: 1211878036}
   - component: {fileID: 1211878035}
   m_Layer: 5
-  m_Name: LeftEyeData
+  m_Name: LeftData
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -857,10 +857,10 @@ RectTransform:
   m_Father: {fileID: 406882041}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -400, y: 250}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -150}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1211878035
 MonoBehaviour:
@@ -877,7 +877,7 @@ MonoBehaviour:
   m_rawImage: {fileID: 1211878036}
   m_texture: {fileID: 0}
   dataPoint: 0
-  Left_Right: 1
+  dataSelect: 1
 --- !u!114 &1211878036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1319,7 +1319,7 @@ Animator:
   m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -14646,7 +14646,7 @@ GameObject:
   - component: {fileID: 1651221754}
   - component: {fileID: 1651221756}
   m_Layer: 5
-  m_Name: RightEyeData
+  m_Name: RightData
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14666,10 +14666,10 @@ RectTransform:
   m_Father: {fileID: 406882041}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 400, y: 250}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -150, y: -150}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1651221754
 MonoBehaviour:
@@ -14719,7 +14719,7 @@ MonoBehaviour:
   m_rawImage: {fileID: 1651221754}
   m_texture: {fileID: 0}
   dataPoint: 0
-  Left_Right: 2
+  dataSelect: 2
 --- !u!1 &1896437108
 GameObject:
   m_ObjectHideFlags: 0

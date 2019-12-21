@@ -3,7 +3,7 @@
 **Author:** [Tianxing Wu](https://github.com/TianxingWu)
 
 <p align="center">
-    <img src="./Doc/OpenVHead.jpg">
+    <img src="./Figures/OpenVHead.jpg">
 </p>
 
 ## Introduction
@@ -50,14 +50,14 @@ The detailed documentation for the method is still under construction.
 This system now has two character models with customized parameter settings. To change the character model, select the corresponding GameObject in the Scene hierarchy and unhide it by clicking on the toggle next to the object's name in the inspector, while the other GameObject should be hide. For example, if you want to change from model 1 to model 2, the settings should look like this:
 
 <p align="center">
-    <img width="500" img src="./Doc/select_model.png">
+    <img width="500" img src="./Figures/select_model.png">
 </p>
 
 ### Debug mode
 To make it easier to tune the control parameters, a debug mode is offered to visualize the eyes' openness value for the Kizuna AI model. You can enable this mode by unhiding the child GameObjects of Canvas: RightEyeData and LeftEyeData. You would then see the real time plotting as follows:
 
 <p align="center">
-    <img width="350" img src="./Doc/debug_mode.png">
+    <img width="350" img src="./Figures/debug_mode.png">
 </p>
 
 If you want to monitor the output of the Python Script, comment the following line in [SocketServer.cs](\Assets\Scripts\SocketServer.cs)

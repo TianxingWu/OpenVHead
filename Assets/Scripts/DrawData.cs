@@ -8,7 +8,7 @@ public class DrawData : MonoBehaviour
     public RawImage m_rawImage;
     public Texture2D m_texture;
     public int dataPoint;
-    public int Left_Right;
+    public int dataSelect;
     private int graphWidth = 300;
     private int graphHeight = 300;
     private int[] dataArray;
@@ -40,15 +40,13 @@ public class DrawData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Left_Right==1)//读入左眼数据
+        switch(dataSelect)
         {
-            // dataPoint = (int)(500*BlendShapesController.leftEyeShape[1]); // LeftEye data
-            dataPoint = (int)(1000*HeadController.headRot[1]+150);
-        }
-        else if(Left_Right==2)//读入右眼数据
-        {
-            // dataPoint = (int)(500*BlendShapesController.rightEyeShape[1]); // RightEye data
-            dataPoint = (int)(1000*HeadController.headRot[3]);
+            case 1: dataPoint = (int)(500*BlendShapesController.leftEyeShape[1]);break; // LeftEye data (Kizuna AI model only)
+            case 2: dataPoint = (int)(500*BlendShapesController.rightEyeShape[1]);break; // RightEye data (Kizuna AI model only)
+            case 3: dataPoint = (int)(1000*HeadController.headRot[1]+150);break;// Head rotation Quaternion y
+            case 4: dataPoint = (int)(1000*HeadController.headRot[3]);break;// Head rotation Quaternion w
+            default: Debug.Log("Please Select a proper data number.");break;
         }
 
         dataArray[0] = dataPoint;

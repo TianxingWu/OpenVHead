@@ -28,8 +28,8 @@ boxPoints3D = np.array(([500., 500., 500.],
                          [500., -500., -500.]))
 boxPoints2D = np.zeros((1,1,8,2))
 # parameters for mean filter
-windowlen_1 = 8
-queue3D_points = np.zeros((windowlen_1,68,2))
+windowlen_1 = 5
+queue3D_points = np.zeros((windowlen_1,POINTS_NUM_LANDMARK,2))
 
 windowlen_2 =5
 queue1D = np.zeros(windowlen_2)
@@ -53,13 +53,31 @@ def mean_filter_simple(input):
     output = queue1D.mean()
     return output
 
-def kalman_filter(input, Q, R):
+def kalman_filter_simple(input, Q, R):
     global XX
     global PP
     K = PP / (PP + R)
     XX = XX + K * (input - XX)
     PP = PP - K * PP + Q
     return XX
+
+class KalmanObject:
+    def __init__(self, m, Qval, Rval):
+        self.K = np.zeros((m,m))
+        self.xx = np.zeros(m)
+        self.P = np.eye(m)
+        self.F = np.eye(m)
+        self.B = np.eye(m)
+        self.H = np.eye(m)
+        self.Q = Qval * np.eye(m)
+        self.R = Rval * np.eye(m)
+
+    def kalman_update(self, uu, zz):
+        self.xx = self.F.dot(self.xx) + self.B.dot(uu)
+        self.P = self.F.dot(self.P).dot(self.F.T) + self.Q
+        self.K = self.P.dot(self.H.T).dot( np.linalg.inv(self.H.dot(self.P).dot(self.H.T) + self.R) )
+        self.xx = self.xx + self.K.dot(zz - self.H.dot(self.xx))
+        self.P = self.P - self.K.dot(self.H).dot(self.P)
 
 # Format convert      
 def landmarks_to_np(landmarks, dtype="int"):
@@ -171,9 +189,9 @@ def get_pose_estimation(img_size, image_points ):
     (success, rotation_vector, translation_vector) = cv2.solvePnP(model_points, imagePoints, camera_matrix, dist_coeffs, flags=cv2.SOLVEPNP_DLS)
     
     ############################
-    # rotation_vector[0] = kalman_filter(rotation_vector[0], 0.1, 0.01)
-    # rotation_vector[1] = kalman_filter(rotation_vector[1], 0.1, 0.01)
-    # rotation_vector[2] = kalman_filter(rotation_vector[2], 0.1, 0.01)
+    # rotation_vector[0] = kalman_filter_simple(rotation_vector[0], 0.1, 0.01)
+    # rotation_vector[1] = kalman_filter_simple(rotation_vector[1], 0.1, 0.01)
+    # rotation_vector[2] = kalman_filter_simple(rotation_vector[2], 0.1, 0.01)
 
     print("Rotation Vector:\n {}".format(rotation_vector))
     print("Translation Vector:\n {}".format(translation_vector))
@@ -205,6 +223,13 @@ if __name__ == '__main__':
     except:
         print("\nERROR: No socket connection.\n")
         sys.exit(0)
+
+    # initialize kalman object
+    KalmanX = KalmanObject(POINTS_NUM_LANDMARK, 1,10) # Tune Q, R to change landmarks_x sensitivity
+    KalmanY = KalmanObject(POINTS_NUM_LANDMARK, 1,10) # Tune Q, R to change landmarks_y sensitivity
+    uu_ = np.zeros((POINTS_NUM_LANDMARK))
+    # initialize PARAMETERS
+    landmarks = np.zeros((POINTS_NUM_LANDMARK,2))
     
 
     open_time = time.time()
@@ -234,7 +259,14 @@ if __name__ == '__main__':
         
         # Compute feature parameters of facial expressions (eyes, mouth)
         landmarks_orig = landmarks_to_np(landmark_shape) # convert format
-        landmarks = mean_filter_for_landmarks(landmarks_orig) # apply smooth filter
+        
+        # Apply kalman filter to landmarks FOR POSE ESTIMATION
+        KalmanX.kalman_update(uu_, landmarks_orig[:,0])
+        KalmanY.kalman_update(uu_, landmarks_orig[:,1])
+        landmarks[:,0] = KalmanX.xx.astype(np.int32)
+        landmarks[:,1] = KalmanY.xx.astype(np.int32)
+
+        landmarks = mean_filter_for_landmarks(landmarks) # Apply smooth filter to landmarks FOR POSE ESTIMATION
         leftEyeWid, rightEyewid, mouthWid,mouthLen = get_feature_parameters(landmarks_orig)
         parameters_str = 'leftEyeWid:{}, rightEyewid:{}, mouthWid:{}, mouthLen:{}'.format(leftEyeWid, rightEyewid, mouthWid, mouthLen)
         print(parameters_str)
