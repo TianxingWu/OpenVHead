@@ -78,8 +78,8 @@ public class BlendShapesController : MonoBehaviour
             case 2:
             {
                 // Blinking Function version 2 -- Sigmoid Function
-                leftEyeWeight = 100 - 100/(1+Mathf.Exp(-500*(leftEyeShape[1]-0.15f)));
-                rightEyeWeight = 100 - 100/(1+Mathf.Exp(-500*(rightEyeShape[1]-0.15f)));
+                leftEyeWeight = 100 - 100/(1+Mathf.Exp(-500*(leftEyeShape[1]-0.12f)));
+                rightEyeWeight = 100 - 100/(1+Mathf.Exp(-500*(rightEyeShape[1]-0.12f)));
                 break;
             }
             default:{Debug.Log("Please Select a Blinking Function.");break;}
