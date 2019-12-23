@@ -10,11 +10,11 @@
 
 This is an on-going project to build a virtual head system for **VTubers**. To make the animation looks more authentic, several filters and control methods are used to smooth and enhance the robustness of the head motion and facial expressions. The system is mainly built with C# and Python in Unity3D environment.
 
-Let's try it on your own! Please feel free to add new functions to this project or just play around with it for entertainment. 
+Let's try it on your own! Feel free to add new functions to the project or just play around with it and have fun. Please star :star: this project if you like it! :blush:
+
+The technical details are described in section [4](#4.-Method), which gives you an overview of how this system works. It's OK to skip this part if you are not interest in them.
 
 To cite this repo, please reference the name "OpenVHead" with the project link [here](https://github.com/TianxingWu/OpenVHead).
-
-The detailed documentation for the method is still under construction.
 
 ## 2. Prerequisite
 
