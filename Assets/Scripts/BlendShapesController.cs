@@ -19,6 +19,9 @@ public class BlendShapesController : MonoBehaviour
 
     private float leftEyeWeight;
     private float rightEyeWeight;
+    private float mouthWidWeight;
+    private float mouthLenWeight;
+    private float shockEyeWeight;
 
     void Awake ()
     {
@@ -32,13 +35,13 @@ public class BlendShapesController : MonoBehaviour
 
     void Update ()
     {
-        // Blinking
+        // Blinking function
         switch(blinkFunctionSelect)
         {
             case 1:
             {
                 // Blinking Function version 1 -- Piecewise Function
-                // Set blend shape for left eye
+                // Set weight for left eye
                 if(leftEyeShape[1]<0.05f)//闭眼 //参数匹配：ParameterServer -> 参数控制!闭眼
                 {
                     leftEyeWeight = 100;
@@ -55,7 +58,7 @@ public class BlendShapesController : MonoBehaviour
                 {
                     leftEyeWeight = 0;
                 }
-                // Set blend shape for right eye
+                // Set weight for right eye
                 if(rightEyeShape[1]<0.05f)
                 {
                     rightEyeWeight = 100;
@@ -85,39 +88,44 @@ public class BlendShapesController : MonoBehaviour
             default:{Debug.Log("Please Select a Blinking Function.");break;}
         }
         
-        // Set blinking weight
-        skinnedMeshRenderer.SetBlendShapeWeight(leftEyeNum, leftEyeWeight);
-        skinnedMeshRenderer.SetBlendShapeWeight(rightEyeNum, rightEyeWeight);
-        
-        
-
-        // Shocked
+        // Shocked function
         if(rightEyeShape[1]>0.25f)//惊愕 0.25-0.35线性
         {
-            skinnedMeshRenderer.SetBlendShapeWeight (shockEyeNum, 500*rightEyeShape[1]-125);
+            shockEyeWeight = 500*rightEyeShape[1]-125;
         }
         else
         {
-            skinnedMeshRenderer.SetBlendShapeWeight (shockEyeNum, 0);
+            shockEyeWeight = 0;
         }
 
-        // Set blend shape for mouth
+        // Mouth deformation function
         if (500*mouthShape[1] < 100f)
         {
-            skinnedMeshRenderer.SetBlendShapeWeight (mouthWidNum, 500*mouthShape[1]);
+            mouthWidWeight = 500*mouthShape[1];
+        }
+        else
+        {
+            mouthWidWeight = 100f;
         }
 
         if(mouthShape[0] <0.1f)
         {
-            skinnedMeshRenderer.SetBlendShapeWeight (mouthLenNum, 50);
+            mouthLenWeight = 50;
         }
         else if(mouthShape[0] < 0.4f)
         {
-            skinnedMeshRenderer.SetBlendShapeWeight (mouthLenNum, 120f-400*mouthShape[0]);
+            mouthLenWeight = 120f-400*mouthShape[0];
         }
         else
         {
-            //skinnedMeshRenderer.SetBlendShapeWeight (mouthLenNum, 0);
+            // mouthLenWeight = 0;
         }
+
+        // Apply deformation weights
+        skinnedMeshRenderer.SetBlendShapeWeight(leftEyeNum, leftEyeWeight);
+        skinnedMeshRenderer.SetBlendShapeWeight(rightEyeNum, rightEyeWeight);
+        skinnedMeshRenderer.SetBlendShapeWeight (mouthWidNum, mouthWidWeight);
+        skinnedMeshRenderer.SetBlendShapeWeight (mouthLenNum, mouthLenWeight);
+        skinnedMeshRenderer.SetBlendShapeWeight (shockEyeNum, shockEyeWeight);
     }
 }
