@@ -122,7 +122,9 @@ Several studies has been done to extract facial expression features from face la
     <img width="350" img src="./Figures/EAR.jpg">
 </p>
 
-<p align="center"><img alt="$$&#10;EAR = \frac{\Vert P_2 - P_6 \Vert + \Vert P_3 - P_5 \Vert}{2\Vert P_1 - P_4 \Vert}&#10;$$" src="svgs/4937d8a07708ff7402e96fab8af0e04a.svg" align="middle" width="226.77269999999996pt" height="38.834894999999996pt"/></p>
+$$
+EAR = \frac{\Vert P_2 - P_6 \Vert + \Vert P_3 - P_5 \Vert}{2\Vert P_1 - P_4 \Vert}
+$$
 
 
 This measure is quite simple and straight forward. However, it does not have good **rotational invariance**, since the denominator would change a lot undesirably when the head shakes from one side to another. Thus, after a series of tests I construct a more robust measure for the eyes' openness, and also construct similar measures to describe the shape of the mouth.
@@ -130,7 +132,18 @@ This measure is quite simple and straight forward. However, it does not have goo
     <img width="500" img src="./Figures/facial_expression_features.jpg">
 </p>
 
-<p align="center"><img alt="$$&#10;\begin{aligned}&#10;&amp; d_{ref} = \frac{d_{00} + d_{11}}{2} = \frac{\Vert P_{27} - P_8 \Vert + \Vert P_0 - P_{16} \Vert}{2} \\&#10;&amp; d_1 = \Vert P_{37} - P_{41} \Vert \\&#10;&amp; \vdots \\&#10;&amp; d_4 = \Vert P_{44} - P_{46} \Vert \\[1em]&#10;&amp; leftEyeWid = 6\times(\frac{d_1 + d_2}{2d_{ref}} - 0.02) \\&#10;&amp; rightEyeWid = 6\times(\frac{d_3 + d_4}{2d_{ref}} - 0.02) \\&#10;&amp; mouthWid = 1.27\times (\frac{d_5}{d_{ref}}-0.13) + 0.02 \\&#10;&amp; mouthLen = \frac{d_6}{d_{ref}}&#10;\end{aligned}&#10;$$" src="svgs/c8a8ce65e9d41a49545800744f3f5388.svg" align="middle" width="322.55025pt" height="319.7271pt"/></p>
+$$
+\begin{aligned}
+& d_{ref} = \frac{d_{00} + d_{11}}{2} = \frac{\Vert P_{27} - P_8 \Vert + \Vert P_0 - P_{16} \Vert}{2} \\
+& d_1 = \Vert P_{37} - P_{41} \Vert \\
+& \vdots \\
+& d_4 = \Vert P_{44} - P_{46} \Vert \\[1em]
+& leftEyeWid = 6\times(\frac{d_1 + d_2}{2d_{ref}} - 0.02) \\
+& rightEyeWid = 6\times(\frac{d_3 + d_4}{2d_{ref}} - 0.02) \\
+& mouthWid = 1.27\times (\frac{d_5}{d_{ref}}-0.13) + 0.02 \\
+& mouthLen = \frac{d_6}{d_{ref}}
+\end{aligned}
+$$
 
 
 The core idea is to define a reference distance which is insensitive to the rotation.
@@ -186,7 +199,9 @@ d_out_1 = d_out;  // Update last derivative term
 
 Where **KP**, **KD** are parameters for the PD controller and **ALPHA** is the incomplete derivative coefficient. The response characteristic of the controller can be altered by tuning these parameters. To ensure robustness, the following relation is always kept to make sure that the system is **overdamped**:
 
-<p align="center"><img alt="$$&#10;\text{KD}^2 &gt; 4\times\text{M}\times\text{KP}&#10;$$" src="svgs/86b57b70b8b4a4223c17df2bb07ea0d9.svg" align="middle" width="142.077375pt" height="15.954361499999997pt"/></p>
+$$
+\text{KD}^2 > 4\times\text{M}\times\text{KP}
+$$
 
 Here are two frequency response diagrams of the system with ALPHA = 0 and ALPHA = 0.7, respectively. They can reflect how much the high-frequency noise would affect the output.
 
