@@ -202,22 +202,19 @@ More details of the implementation can be refered to [ParameterServer.cs](\Asset
 ##### 4.2.2.2 Blend shape functions
 To make the facial expression of the virtual character more realistic, I write customized deformation functions for the blend shapes of model 2: **Blinking function**, **Shocked function** and **Mouth deformation function**. Since the function may vary according to the specific model, I'll just list the most representative and important one here, which is the eyes' **Blinking function**. It has two versions at present.
 <html>
-    <table style="text-align:center" width="100%">
+    <table border="0" style="text-align:center" width="100%">
         <tr>
-            <td width="50%>
-                <p align="center"><b>Version 1: A parameterized sigmoid function</b></p>
-            </td>
-            <td width="50%>
-                <p align="center">
-                    <b>Version 2: A piecewise function</b>
-                </p>
-            </td>
+            <th><b>Version 1: A parameterized sigmoid function</b></th>
+            <th><b>Version 2: A piecewise function</b><th>
+        </tr>
+        <tr>
+            <td colspan="2"><p align="center">
+    <img src="./Figures/blinking_function.png">
+</p></td>
         </tr>
     </table>
 </html>
-<p align="center">
-    <img src="./Figures/blinking_function.png">
-</p>
+
 Where m is the processed measurement; w is the weight applied to the blend shape controller, ranging from 0 (no deformation) to 100 (max deformation).
 
 ### 4.3 Socket communication
