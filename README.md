@@ -204,8 +204,8 @@ To make the facial expression of the virtual character more realistic, I write c
 <html>
     <table border="0" style="text-align:center" width="100%">
         <tr>
-            <th><b>Version 1: A parameterized sigmoid function</b></th>
-            <th><b>Version 2: A piecewise function</b></th>
+            <th width="50%"><b>Version 1: A parameterized sigmoid function</b></th>
+            <th width="50%"><b>Version 2: A piecewise function</b></th>
         </tr>
         <tr>
             <td colspan="2"><p align="center">
