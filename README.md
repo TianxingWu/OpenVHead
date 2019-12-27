@@ -36,7 +36,7 @@ To cite this repo, please reference the name "OpenVHead" with the project link [
 ### 3.1 Quit Start
 1. Configure the environment. You may use pip to install the required packages. The .whl file of opencv-python 3.4.0 and dlib 19.7.0 packages can be downloaded from [here](https://pypi.org/project/opencv-python/3.4.0.12/#files) and [here](https://pypi.org/project/dlib/19.7.0/#files). Note that you should choose the appropriate version.
 
-2. Clone or download the repository to your workspace.
+2. Clone the repository to your workspace. You can also download the .zip file of the [latest release](https://github.com/TianxingWu/OpenVHead/releases/latest) or older versions from [Release](https://github.com/TianxingWu/OpenVHead/releases).
 
 3. Open the folder as a project in Unity.
 
