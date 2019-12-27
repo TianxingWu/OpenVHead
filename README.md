@@ -224,7 +224,7 @@ When tuning the parameters, there is always a contradiction between  robustness 
 The following figure demonstrates the difference of the system response without and with this trick. T1, T2 and T3 are the eye-closed duration of the original response, while T is eye-closed duration of the new response.
 
 <p align="center">
-    <img src="./Figures/response.jpg">
+    <img src="./Figures/response_withdeadzone.jpg">
 </p>
 
 
