@@ -148,7 +148,7 @@ Before the computed quaternions are applied to the model, the four parameters ar
 
 #### 4.2.2 Facial expression control
 ##### 4.2.2.1. Dealing with noise
-As is mentioned in [4.1.1](#4.1.1-Face-landmarks-tracking), the landmarks used for facial expressions are un-filtered due to some considerations, as a result the measures we got here are quite noisy. To solve this problem, I think up an interesting method that turn it into a **control problem**.
+As is mentioned in [4.1.1](#4.1.1-Face-landmarks-tracking), the landmarks used for facial expressions are un-filtered due to some considerations, as a result the measures we got here (leftEyeWid, rightEyeWid, mouthWid, etc.) are quite noisy. To solve this problem, I think up an interesting method that turn it into a **control problem**.
 
 Specifically, I take the **input measure** as the **desired position** of a **mass**, and an **input force** given by **incomplete derivative PD control** is attached to the mass. Then the **actual position** of the mass is used as the **output measure**.
 
@@ -213,6 +213,20 @@ To make the facial expression of the virtual character more realistic, I write c
 </html>
 
 Where m is the processed measurement; w is the weight applied to the blend shape controller, ranging from 0 (no deformation) to 100 (max deformation).
+
+##### 4.2.2.3 A little trick:
+When tuning the parameters, there is always a contradiction between  robustness and sensitivity. Especially when controlling the shape of the eye, it is reasonable to keep it smooth, which requires a longer response time, but that would also make the detection of blinking more challenging. To solve this problem, I use a small trick here. 
+
+- **In the dynamic system part:** While keep the system as smooth as you can, **force** the "position", that is, the measure, **to be zero** when the original measure is lower than a pre-set threshold.
+
+- **In the blend shape part:** Use the same threshold as the upper bound for 100 weight (eye fully closed).
+
+The following figure demonstrates the difference of the system response without and with this trick. T1, T2 and T3 are the eye-closed duration of the original response, while T is eye-closed duration of the new response.
+
+<p align="center">
+    <img src="./Figures/response.jpg">
+</p>
+
 
 ### 4.3 Socket communication
 The communication between the front-end and the back-end is made possible using **Socket**. Specifically, a **Unity C# server** and a **Python client** are setup to transfer data through a TCP/IP connection. The details of this part of implementation can be refered to [SocketServer.cs](\Assets\Scripts\SocketServer.cs).
