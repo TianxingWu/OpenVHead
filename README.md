@@ -110,9 +110,7 @@ The position and orientation of an object in 3D scene can be estimated using a m
 However, please note that I have modified some part of the implementation to be compatible with my specific application, which includes:
 
 - Rather than using the 5 **feature points** mentioned in the blog, I choose another set of points since they are more stable than the original ones when the facial expressions become exaggerated
-
 - The rotation vector is converted to **quaternions** to adapt to the Unity applications
-
 - The algorithm to solve PnP is set to **DLS** rather than the default one
 
 #### 4.1.3 Facial expression features extraction
@@ -218,7 +216,6 @@ Where m is the processed measurement; w is the weight applied to the blend shape
 When tuning the parameters, there is always a contradiction between  robustness and sensitivity. Especially when controlling the shape of the eye, it is reasonable to keep it smooth, which requires a longer response time, but that would also make the detection of blinking more challenging. To solve this problem, I use a small trick here. 
 
 - **In the dynamic system part:** While keep the system as smooth as you can, **force** the "position", that is, the measure, **to be zero** when the original measure is lower than a pre-set threshold.
-
 - **In the blend shape part:** Use the same threshold as the upper bound for 100 weight (eye fully closed).
 
 The following figure demonstrates the difference of the system response without and with this trick. T1, T2 and T3 are the eye-closed duration of the original response, while T is eye-closed duration of the new response.
