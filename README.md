@@ -8,7 +8,7 @@
 
 ## 1. Introduction
 
-This is an on-going project to build a virtual head system for **VTubers**. To make the animation looks more authentic, several filters and control methods are used to smooth and enhance the robustness of the head motion and facial expressions. The system is mainly built with C# and Python in Unity3D environment.
+This is an on-going project to build a vision-based head motion capture system for **VTubers**. To make the animation looks more authentic, several filters and control methods are used to smooth and enhance the robustness of the head motion and facial expressions. The system is mainly built with C# and Python in Unity3D environment.
 
 Let's try it on your own! Feel free to add new functions to the project or just play around with it and have fun. Please star :star: this project if you like it! :blush:
 
@@ -236,6 +236,8 @@ The model file 'shape_predictor_68_face_landmarks.dat' for face landmarks detect
 
 The Kizuna AI 3D model (Model 2) is converted from the PMX model offered by Tomitake on Kizuna AI's [official website](https://kizunaai.com/) &copy;KizunaAI . It is only used as a demo for research in this project. Further information about the term of use of this model should be referred to the original site [here](https://kizunaai.com/download/).
 
+I would also like to thank my friend [@Arsennnic](https://github.com/Arsennnic) for his support and precious advices.
+
 ## 7. What's Next
 - [x] New blinking function
 - [ ] Gaze tracking
@@ -244,18 +246,3 @@ The Kizuna AI 3D model (Model 2) is converted from the PMX model offered by Tomi
 
 ## 8. References
 - [1] Tereza Soukupova´ and Jan Cˇ ech. Real-Time Eye Blink Detection using Facial Landmarks. 21st Computer Vision Winter Workshop, February 2016.
-
-
-
-
-
-
-
-
-<!-- 
-How to use [readme2tex](https://github.com/leegao/readme2tex) tool to beautify formulas in readme.md?
-
-```
-python -m readme2tex --nocdn --svgdir Formulas --output README.md --readme README_RAW.md
-```
--->
