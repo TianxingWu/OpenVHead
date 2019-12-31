@@ -159,7 +159,7 @@ Before the computed quaternions are applied to the model, the four parameters ar
 
 #### 4.2.2 Facial expression control
 ##### 4.2.2.1. Dealing with noise
-As is mentioned in [4.1.1](#4.1.1-Face-landmarks-tracking), the landmarks used for facial expressions are un-filtered due to some considerations, as a result the measures we got here (leftEyeWid, rightEyeWid, mouthWid, etc.) are quite noisy. To solve this problem, I think up an interesting method that turn it into a **control problem**.
+As is mentioned in [4.1.1](#4.1.1-Face-landmarks-tracking), the landmarks used for facial expressions are un-filtered due to some considerations, as a result the measures we got here ($leftEyeWid$, $rightEyeWid$, $mouthWid$, etc.) are quite noisy. To solve this problem, I think up an interesting method that turn it into a **control problem**.
 
 Specifically, I take the **input measure** as the **desired position** of a **mass**, and an **input force** given by **incomplete derivative PD control** is attached to the mass. Then the **actual position** of the mass is used as the **output measure**.
 
@@ -211,21 +211,13 @@ More details of the implementation can be refered to [ParameterServer.cs](\Asset
 
 ##### 4.2.2.2 Blend shape functions
 To make the facial expression of the virtual character more realistic, I write customized deformation functions for the blend shapes of model 2: **Blinking function**, **Shocked function** and **Mouth deformation function**. Since the function may vary according to the specific model, I'll just list the most representative and important one here, which is the eyes' **Blinking function**. It has two versions at present.
-<html>
-    <table border="0" style="text-align:center" width="100%">
-        <tr>
-            <th width="50%"><b>Version 1: A parameterized sigmoid function</b></th>
-            <th width="50%"><b>Version 2: A piecewise function</b></th>
-        </tr>
-        <tr>
-            <td colspan="2"><p align="center">
-    <img src="./Figures/blinking_function.png">
-</p></td>
-        </tr>
-    </table>
-</html>
 
-Where m is the processed measurement; w is the weight applied to the blend shape controller, ranging from 0 (no deformation) to 100 (max deformation).
+| Version 1: A parameterized sigmoid function | Version 2: A piecewise function |
+| --- | --- |
+| ![](./Figures/blinking_function_2.png) | ![](./Figures/blinking_function_1.png) |
+| $$w=100-\frac{100}{1+\text{e}^{-500(m-0.12)}}$$ | $$w=\left\{\begin{matrix}100\quad &m<0.05\\ 5/m \quad &0.05\le m\le 0.1\\ 100-500/m \quad &0.01\le m\le 0.2\\ 0 \quad &m\ge 0.2\end{matrix}\right.$$ |
+
+Where $m$ is the processed measurement; $w$ is the weight applied to the blend shape controller, ranging from 0 (no deformation) to 100 (max deformation).
 
 ##### 4.2.2.3 A little trick:
 When tuning the parameters, there is always a contradiction between  robustness and sensitivity. Especially when controlling the shape of the eye, it is reasonable to keep it smooth, which requires a longer response time, but that would also make the detection of blinking more challenging. To solve this problem, I use a small trick here. 
@@ -233,7 +225,7 @@ When tuning the parameters, there is always a contradiction between  robustness 
 - **In the dynamic system part:** While keep the system as smooth as you can, **force** the "position", that is, the measure, **to be zero** when the original measure is lower than a pre-set threshold.
 - **In the blend shape part:** Use the same threshold as the upper bound for 100 weight (eye fully closed).
 
-The following figure demonstrates the difference of the system response without and with this trick. T1, T2 and T3 are the eye-closed duration of the original response, while T is eye-closed duration of the new response.
+The following figure demonstrates the difference of the system response without and with this trick. $T_1$, $T_2$ and $T_3$ are the eye-closed duration of the original response, while $T$ is eye-closed duration of the new response.
 
 <p align="center">
     <img src="./Figures/response_withdeadzone.jpg">
@@ -267,3 +259,18 @@ The Kizuna AI 3D model (Model 2) is converted from the PMX model offered by Tomi
 
 ## 8. References
 - [1] Tereza Soukupova´ and Jan Cˇ ech. Real-Time Eye Blink Detection using Facial Landmarks. 21st Computer Vision Winter Workshop, February 2016.
+
+
+
+
+
+
+
+
+<!-- 
+How to use [readme2tex](https://github.com/leegao/readme2tex) tool to beautify formulas in readme.md?
+
+```
+python -m readme2tex --nocdn --svgdir Formulas --output README.md --readme README_RAW.md
+```
+-->

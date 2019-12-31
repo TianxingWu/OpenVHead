@@ -8,7 +8,7 @@
 
 ## 1. Introduction
 
-This is an on-going project to build a vision-based head motion capture system for **VTubers**. To make the animation looks more authentic, several filters and control methods are used to smooth and enhance the robustness of the head motion and facial expressions. The system is mainly built with C# and Python in Unity3D environment.
+This is an on-going project to build a virtual head system for **VTubers**. To make the animation looks more authentic, several filters and control methods are used to smooth and enhance the robustness of the head motion and facial expressions. The system is mainly built with C# and Python in Unity3D environment.
 
 Let's try it on your own! Feel free to add new functions to the project or just play around with it and have fun. Please star :star: this project if you like it! :blush:
 
@@ -120,7 +120,7 @@ Several studies has been done to extract facial expression features from face la
     <img width="350" img src="./Figures/EAR.jpg">
 </p>
 
-<p align="center"><img alt="$$&#10;EAR = \frac{\Vert P_2 - P_6 \Vert + \Vert P_3 - P_5 \Vert}{2\Vert P_1 - P_4 \Vert}&#10;$$" src="svgs/4937d8a07708ff7402e96fab8af0e04a.svg" align="middle" width="226.77269999999996pt" height="38.834894999999996pt"/></p>
+<p align="center"><img alt="$$&#10;EAR = \frac{\Vert P_2 - P_6 \Vert + \Vert P_3 - P_5 \Vert}{2\Vert P_1 - P_4 \Vert}&#10;$$" src="Formulas/4937d8a07708ff7402e96fab8af0e04a.svg" align="middle" width="226.77269999999996pt" height="38.834894999999996pt"/></p>
 
 
 This measure is quite simple and straight forward. However, it does not have good **rotational invariance**, since the denominator would change a lot undesirably when the head shakes from one side to another. Thus, after a series of tests I construct a more robust measure for the eyes' openness, and also construct similar measures to describe the shape of the mouth.
@@ -128,7 +128,7 @@ This measure is quite simple and straight forward. However, it does not have goo
     <img width="500" img src="./Figures/facial_expression_features.jpg">
 </p>
 
-<p align="center"><img alt="$$&#10;\begin{aligned}&#10;&amp; d_{ref} = \frac{d_{00} + d_{11}}{2} = \frac{\Vert P_{27} - P_8 \Vert + \Vert P_0 - P_{16} \Vert}{2} \\&#10;&amp; d_1 = \Vert P_{37} - P_{41} \Vert \\&#10;&amp; \vdots \\&#10;&amp; d_4 = \Vert P_{44} - P_{46} \Vert \\[1em]&#10;&amp; leftEyeWid = 6\times(\frac{d_1 + d_2}{2d_{ref}} - 0.02) \\&#10;&amp; rightEyeWid = 6\times(\frac{d_3 + d_4}{2d_{ref}} - 0.02) \\&#10;&amp; mouthWid = 1.27\times (\frac{d_5}{d_{ref}}-0.13) + 0.02 \\&#10;&amp; mouthLen = \frac{d_6}{d_{ref}}&#10;\end{aligned}&#10;$$" src="svgs/c8a8ce65e9d41a49545800744f3f5388.svg" align="middle" width="322.55025pt" height="319.7271pt"/></p>
+<p align="center"><img alt="$$&#10;\begin{aligned}&#10;&amp; d_{ref} = \frac{d_{00} + d_{11}}{2} = \frac{\Vert P_{27} - P_8 \Vert + \Vert P_0 - P_{16} \Vert}{2} \\&#10;&amp; d_1 = \Vert P_{37} - P_{41} \Vert \\&#10;&amp; \vdots \\&#10;&amp; d_4 = \Vert P_{44} - P_{46} \Vert \\[1em]&#10;&amp; leftEyeWid = 6\times(\frac{d_1 + d_2}{2d_{ref}} - 0.02) \\&#10;&amp; rightEyeWid = 6\times(\frac{d_3 + d_4}{2d_{ref}} - 0.02) \\&#10;&amp; mouthWid = 1.27\times (\frac{d_5}{d_{ref}}-0.13) + 0.02 \\&#10;&amp; mouthLen = \frac{d_6}{d_{ref}}&#10;\end{aligned}&#10;$$" src="Formulas/c8a8ce65e9d41a49545800744f3f5388.svg" align="middle" width="322.55025pt" height="319.7271pt"/></p>
 
 
 The core idea is to define a reference distance which is insensitive to the rotation.
@@ -146,7 +146,7 @@ Before the computed quaternions are applied to the model, the four parameters ar
 
 #### 4.2.2 Facial expression control
 ##### 4.2.2.1. Dealing with noise
-As is mentioned in [4.1.1](#4.1.1-Face-landmarks-tracking), the landmarks used for facial expressions are un-filtered due to some considerations, as a result the measures we got here (leftEyeWid, rightEyeWid, mouthWid, etc.) are quite noisy. To solve this problem, I think up an interesting method that turn it into a **control problem**.
+As is mentioned in [4.1.1](#4.1.1-Face-landmarks-tracking), the landmarks used for facial expressions are un-filtered due to some considerations, as a result the measures we got here (<img alt="$leftEyeWid$" src="Formulas/ccc5f286e35410145c5658eb7b8a9394.svg" align="middle" width="90.04908pt" height="22.831379999999992pt"/>, <img alt="$rightEyeWid$" src="Formulas/2ca4537df1e5007e6bd86c4ee45b02ec.svg" align="middle" width="98.78681999999999pt" height="22.831379999999992pt"/>, <img alt="$mouthWid$" src="Formulas/bf43656f79943e5a05284efb2ac129e9.svg" align="middle" width="79.2462pt" height="22.831379999999992pt"/>, etc.) are quite noisy. To solve this problem, I think up an interesting method that turn it into a **control problem**.
 
 Specifically, I take the **input measure** as the **desired position** of a **mass**, and an **input force** given by **incomplete derivative PD control** is attached to the mass. Then the **actual position** of the mass is used as the **output measure**.
 
@@ -184,7 +184,7 @@ d_out_1 = d_out;  // Update last derivative term
 
 Where **KP**, **KD** are parameters for the PD controller and **ALPHA** is the incomplete derivative coefficient. The response characteristic of the controller can be altered by tuning these parameters. To ensure robustness, the following relation is always kept to make sure that the system is **overdamped**:
 
-<p align="center"><img alt="$$&#10;\text{KD}^2 &gt; 4\times\text{M}\times\text{KP}&#10;$$" src="svgs/86b57b70b8b4a4223c17df2bb07ea0d9.svg" align="middle" width="142.077375pt" height="15.954361499999997pt"/></p>
+<p align="center"><img alt="$$&#10;\text{KD}^2 &gt; 4\times\text{M}\times\text{KP}&#10;$$" src="Formulas/86b57b70b8b4a4223c17df2bb07ea0d9.svg" align="middle" width="142.077375pt" height="15.954361499999997pt"/></p>
 
 Here are two frequency response diagrams of the system with ALPHA = 0 and ALPHA = 0.7, respectively. They can reflect how much the high-frequency noise would affect the output.
 
@@ -196,21 +196,13 @@ More details of the implementation can be refered to [ParameterServer.cs](\Asset
 
 ##### 4.2.2.2 Blend shape functions
 To make the facial expression of the virtual character more realistic, I write customized deformation functions for the blend shapes of model 2: **Blinking function**, **Shocked function** and **Mouth deformation function**. Since the function may vary according to the specific model, I'll just list the most representative and important one here, which is the eyes' **Blinking function**. It has two versions at present.
-<html>
-    <table border="0" style="text-align:center" width="100%">
-        <tr>
-            <th width="50%"><b>Version 1: A parameterized sigmoid function</b></th>
-            <th width="50%"><b>Version 2: A piecewise function</b></th>
-        </tr>
-        <tr>
-            <td colspan="2"><p align="center">
-    <img src="./Figures/blinking_function.png">
-</p></td>
-        </tr>
-    </table>
-</html>
 
-Where m is the processed measurement; w is the weight applied to the blend shape controller, ranging from 0 (no deformation) to 100 (max deformation).
+| Version 1: A parameterized sigmoid function | Version 2: A piecewise function |
+| --- | --- |
+| ![](./Figures/blinking_function_2.png) | ![](./Figures/blinking_function_1.png) |
+| <p align="center"><img alt="$$w=100-\frac{100}{1+\text{e}^{-500(m-0.12)}}$$" src="Formulas/0ad0af5d467e3e7f6c38c38da27d7162.svg" align="middle" width="202.99455pt" height="34.654785pt"/></p> | <p align="center"><img alt="$$w=\left\{\begin{matrix}100\quad &amp;m&lt;0.05\\ 5/m \quad &amp;0.05\le m\le 0.1\\ 100-500/m \quad &amp;0.01\le m\le 0.2\\ 0 \quad &amp;m\ge 0.2\end{matrix}\right.$$" src="Formulas/a97dd0fe181bc0003d9ee38333807ce9.svg" align="middle" width="282.1731pt" height="78.90498pt"/></p> |
+
+Where <img alt="$m$" src="Formulas/0e51a2dede42189d77627c4d742822c3.svg" align="middle" width="14.433210000000003pt" height="14.155350000000013pt"/> is the processed measurement; <img alt="$w$" src="Formulas/31fae8b8b78ebe01cbfbe2fe53832624.svg" align="middle" width="12.210990000000004pt" height="14.155350000000013pt"/> is the weight applied to the blend shape controller, ranging from 0 (no deformation) to 100 (max deformation).
 
 ##### 4.2.2.3 A little trick:
 When tuning the parameters, there is always a contradiction between  robustness and sensitivity. Especially when controlling the shape of the eye, it is reasonable to keep it smooth, which requires a longer response time, but that would also make the detection of blinking more challenging. To solve this problem, I use a small trick here. 
@@ -218,7 +210,7 @@ When tuning the parameters, there is always a contradiction between  robustness 
 - **In the dynamic system part:** While keep the system as smooth as you can, **force** the "position", that is, the measure, **to be zero** when the original measure is lower than a pre-set threshold.
 - **In the blend shape part:** Use the same threshold as the upper bound for 100 weight (eye fully closed).
 
-The following figure demonstrates the difference of the system response without and with this trick. T1, T2 and T3 are the eye-closed duration of the original response, while T is eye-closed duration of the new response.
+The following figure demonstrates the difference of the system response without and with this trick. <img alt="$T_1$" src="Formulas/b1aadae6dafc7da339f61626db58e355.svg" align="middle" width="16.158780000000004pt" height="22.46574pt"/>, <img alt="$T_2$" src="Formulas/b48cd4fc1cc1b8c602c81734763b31f0.svg" align="middle" width="16.158780000000004pt" height="22.46574pt"/> and <img alt="$T_3$" src="Formulas/4025cf3981c802483ddf735af283a602.svg" align="middle" width="16.158780000000004pt" height="22.46574pt"/> are the eye-closed duration of the original response, while <img alt="$T$" src="Formulas/2f118ee06d05f3c2d98361d9c30e38ce.svg" align="middle" width="11.889405000000002pt" height="22.46574pt"/> is eye-closed duration of the new response.
 
 <p align="center">
     <img src="./Figures/response_withdeadzone.jpg">
@@ -244,8 +236,6 @@ The model file 'shape_predictor_68_face_landmarks.dat' for face landmarks detect
 
 The Kizuna AI 3D model (Model 2) is converted from the PMX model offered by Tomitake on Kizuna AI's [official website](https://kizunaai.com/) &copy;KizunaAI . It is only used as a demo for research in this project. Further information about the term of use of this model should be referred to the original site [here](https://kizunaai.com/download/).
 
-I would also like to thank my friend [@Arsennnic](https://github.com/Arsennnic) for his support and precious advices.
-
 ## 7. What's Next
 - [x] New blinking function
 - [ ] Gaze tracking
@@ -254,3 +244,18 @@ I would also like to thank my friend [@Arsennnic](https://github.com/Arsennnic) 
 
 ## 8. References
 - [1] Tereza Soukupova´ and Jan Cˇ ech. Real-Time Eye Blink Detection using Facial Landmarks. 21st Computer Vision Winter Workshop, February 2016.
+
+
+
+
+
+
+
+
+<!-- 
+How to use [readme2tex](https://github.com/leegao/readme2tex) tool to beautify formulas in readme.md?
+
+```
+python -m readme2tex --nocdn --svgdir Formulas --output README.md --readme README_RAW.md
+```
+-->
