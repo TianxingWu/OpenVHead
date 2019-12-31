@@ -244,6 +244,8 @@ The model file 'shape_predictor_68_face_landmarks.dat' for face landmarks detect
 
 The Kizuna AI 3D model (Model 2) is converted from the PMX model offered by Tomitake on Kizuna AI's [official website](https://kizunaai.com/) &copy;KizunaAI . It is only used as a demo for research in this project. Further information about the term of use of this model should be referred to the original site [here](https://kizunaai.com/download/).
 
+I would also like to thank my friend [@Arsennnic](https://github.com/Arsennnic) for his support and precious advices.
+
 ## 7. What's Next
 - [x] New blinking function
 - [ ] Gaze tracking
