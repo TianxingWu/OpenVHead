@@ -40,11 +40,13 @@ To cite this repo, please reference the name "OpenVHead" with the project link [
 
 3. Open the folder as a project in Unity.
 
-4. Press the Play button to run the project.
+4. Drag "MainScene" from Assets -> scenes to the Hierarchy and remove the "Untitled" scene.
 
-5. Press the "Start Thread" button on the UI to start the C# socket server. An output window should pop up and the Python client would start to communicate with the sever. Now the Python script would be running in the background to extract features from the video stream captured by camera and send them to Unity. The virtual character comes to life!
+5. Press the Play button to run the project.
 
-6. Press the Play button again to stop the program. It's not recommended to press the "Stop Thread" button since it seems to cause bugs from time to time. 
+6. Press the "Start Thread" button on the UI to start the C# socket server. An output window should pop up and the Python client would start to communicate with the sever. Now the Python script would be running in the background to extract features from the video stream captured by camera and send them to Unity. The virtual character comes to life!
+
+7. Press the Play button again to stop the program. It's not recommended to press the "Stop Thread" button since it seems to cause bugs from time to time. 
 
 ### 3.2 Model Selection
 This system now has two character models with customized parameter settings. To change the character model, select the corresponding GameObject in the Scene hierarchy and unhide it by clicking on the toggle next to the object's name in the inspector, while the other GameObject should be hide. For example, if you want to change from model 1 to model 2, the settings should look like this:
@@ -227,7 +229,8 @@ The socket endpoint is set at:
 
 
 ## 5. Known Issues
-Sometimes the Python script running in the background could fail to terminate after releasing the Play button. If this happens, navigate to the "Output" window (the one that contains your face) and press 'ESC', and the thread would be stopped manually. 
+- Sometimes the Python script running in the background could fail to terminate after releasing the Play button. If this happens, navigate to the "Output" window (the one that contains your face) and press 'ESC', and the thread would be stopped manually. 
+- The performance may depend on the hardware you use. This program runs perfectly on my current laptop with i7-9750H CPU and RTX 2060 GPU, but it runs quite slow when tested on my old laptop with i7-6500U CPU and AMD Radeon R7 M360 GPU (bought in 2016). I'm not sure about the minimum system requirements at present. Please create a issue with your hardware condition if you encounter similar problems. 
 
 ## 6. Acknowledgement
 The overall structure of the head pose estimation part is adapted from [Head Pose Estimation using OpenCV and Dlib](https://www.learnopencv.com/head-pose-estimation-using-opencv-and-dlib/) by Satya Mallick and [this blog](https://blog.csdn.net/yuanlulu/article/details/82763170) by yuanlulu.
