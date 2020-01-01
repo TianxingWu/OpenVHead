@@ -230,7 +230,7 @@ The socket endpoint is set at:
 
 ## 5. Known Issues
 - Sometimes the Python script running in the background could fail to terminate after releasing the Play button. If this happens, navigate to the "Output" window (the one that contains your face) and press 'ESC', and the thread would be stopped manually. 
-- The performance may depend on the hardware you use. This program runs perfectly on my current laptop with i7-9750H CPU and RTX 2060 GPU, but it runs quite slow when tested on my old laptop with i7-6500U CPU and AMD Radeon R7 M360 GPU (bought in 2016). I'm not sure about the minimum system requirements at present. Please create a issue with your hardware condition if you encounter similar problems. 
+- The performance may depend on the hardware you use. This program runs perfectly on my current laptop with i7-9750H CPU and RTX 2060 GPU, but it runs quite slow when tested on my old laptop with i7-6500U CPU and AMD Radeon R7 M360 GPU (bought in 2016). I'm not sure about the minimum system requirements at present. Please create an issue with your hardware condition if you encounter similar problems. 
 
 ## 6. Acknowledgement
 The overall structure of the head pose estimation part is adapted from [Head Pose Estimation using OpenCV and Dlib](https://www.learnopencv.com/head-pose-estimation-using-opencv-and-dlib/) by Satya Mallick and [this blog](https://blog.csdn.net/yuanlulu/article/details/82763170) by yuanlulu.
