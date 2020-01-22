@@ -16,6 +16,8 @@ The technical details are described in section [4](#4.-Method), which gives you 
 
 To cite this repo, please reference the name "OpenVHead" with the project link [here](https://github.com/TianxingWu/OpenVHead).
 
+**Demo**: [Video Link (bilibili)](https://www.bilibili.com/video/av80929075)
+
 ## 2. Prerequisite
 
 ### 2.1 Hardware
