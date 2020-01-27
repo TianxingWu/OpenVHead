@@ -19,6 +19,8 @@ detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("./data/shape_predictor_68_face_landmarks.dat")
 POINTS_NUM_LANDMARK = 68
 
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8)) # CLAHE Object (for Adaptive histogram equalization)
+
 boxPoints3D = np.array(([500., 500., 500.],
                          [-500., 500., 500.],
                          [-500., -500., 500.],
@@ -140,7 +142,10 @@ def get_largest_face(dets):
 # Feature points extraction using dlib
 def get_image_points(img):                        
     gray = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY )
-    dets = detector( gray, 0 )
+    gray_eq = clahe.apply(gray) # Adaptive histogram equalization  
+    #cv2.imshow("gray",gray)
+    #cv2.imshow("gray_eq",gray_eq)
+    dets = detector( gray_eq, 0 )
 
     if 0 == len( dets ):
         print( "ERROR: found no face" )
@@ -252,7 +257,7 @@ if __name__ == '__main__':
             img = cv2.resize( img, (int( w ), int( h )), interpolation=cv2.INTER_CUBIC )
             size = img.shape
         
-        img = cv2.normalize(img,dst=None,alpha=350,beta=10,norm_type=cv2.NORM_MINMAX)
+        #img = cv2.normalize(img,dst=None,alpha=350,beta=10,norm_type=cv2.NORM_MINMAX)
         ret, landmark_shape = get_image_points(img)
         if ret != 0:
             print('ERROR: get_image_points failed')
