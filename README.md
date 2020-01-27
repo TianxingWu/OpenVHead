@@ -68,7 +68,7 @@ Once the FBX file is ready, you should do the following steps to get it to work:
 
 3. Copy and paste the "ParameterServer (Model 2)" and "HeadController (Model 2)" GameObject from the "KizunaAI (Model 2)" GameObject's hierarchy to your model GameObject.
 
-4. Click "Add Component" in the mesh GameObject's Inspector and add the script object: "Blend Shapes Controller" which should shown in the drop-down list.
+4. Click "Add Component" in the mesh GameObject's Inspector and add the script object: "Blend Shapes Controller" which should be shown in the drop-down list.
 
 5. Change the values in "Blend Shapes Controller" according to the number of the blend shapes that you want to control. Note that the blend shapes are numbered from 0.
 
@@ -116,7 +116,7 @@ To estimate the head position, orientation and the facial expressions features, 
     <img width="350" img src="./Figures/face_landmarks.png">
 </p>
 
-Since the location of the detected landmarks are quite noisy which would make pose estimation extremely unstable, a **Kalman filter** is used to track the landmarks, which means the history information is used rather than  just relying on the detected location from current frame alone.
+Since the location of the detected landmarks are quite noisy which would make pose estimation extremely unstable, a **Kalman filter** is used to track the landmarks, which means the history information is used rather than just relying on the detected location from current frame alone.
 
 Specifically, two Kalman filters are applied to the x-coordinate and y-coordinate of the 68 points, respectively.
 
@@ -134,7 +134,7 @@ However, please note that I have modified some part of the implementation to be 
 - The algorithm to solve PnP is set to **DLS** rather than the default one
 
 #### 4.1.3 Facial expression features extraction
-Several studies has been done to extract facial expression features from face landmarks. One of the mostly used feature for eye-blinking detection is called Eye-Aspect-Ratio [[1](#8.-References)] as shown below:
+Several studies have been done to extract facial expression features from face landmarks. One of the mostly used feature for eye-blinking detection is called Eye-Aspect-Ratio [[1](#8.-References)] as shown below:
 
 <p align="center">
     <img width="350" img src="./Figures/EAR.jpg">
@@ -212,7 +212,7 @@ Here are two frequency response diagrams of the system with ALPHA = 0 and ALPHA 
     <img src="./Figures/frequency_response.png">
 </p>
 
-More details of the implementation can be refered to [ParameterServer.cs](\Assets\Scripts\ParameterServer.cs).
+More details of the implementation can be referred to [ParameterServer.cs](\Assets\Scripts\ParameterServer.cs).
 
 ##### 4.2.2.2 Blend shape functions
 To make the facial expression of the virtual character more realistic, I write customized deformation functions for the blend shapes of model 2: **Blinking function**, **Shocked function** and **Mouth deformation function**. Since the function may vary according to the specific model, I'll just list the most representative and important one here, which is the eyes' **Blinking function**. It has two versions at present.
@@ -225,7 +225,7 @@ To make the facial expression of the virtual character more realistic, I write c
 Where <img alt="$m$" src="Formulas/0e51a2dede42189d77627c4d742822c3.svg" align="middle" width="14.433210000000003pt" height="14.155350000000013pt"/> is the processed measurement; <img alt="$w$" src="Formulas/31fae8b8b78ebe01cbfbe2fe53832624.svg" align="middle" width="12.210990000000004pt" height="14.155350000000013pt"/> is the weight applied to the blend shape controller, ranging from 0 (no deformation) to 100 (max deformation).
 
 ##### 4.2.2.3 A little trick:
-When tuning the parameters, there is always a contradiction between  robustness and sensitivity. Especially when controlling the shape of the eye, it is reasonable to keep it smooth, which requires a longer response time, but that would also make the detection of blinking more challenging. To solve this problem, I use a small trick here. 
+When tuning the parameters, there is always a contradiction between robustness and sensitivity. Especially when controlling the shape of the eye, it is reasonable to keep it smooth, which requires a longer response time, but that would also make the detection of blinking more challenging. To solve this problem, I use a small trick here. 
 
 - **In the dynamic system part:** While keep the system as smooth as you can, **force** the "position", that is, the measure, **to be zero** when the original measure is lower than a pre-set threshold.
 - **In the blend shape part:** Use the same threshold as the upper bound for 100 weight (eye fully closed).
@@ -238,7 +238,7 @@ The following figure demonstrates the difference of the system response without 
 
 
 ### 4.3 Socket communication
-The communication between the front-end and the back-end is made possible using **Socket**. Specifically, a **Unity C# server** and a **Python client** are setup to transfer data through a TCP/IP connection. The details of this part of implementation can be refered to [SocketServer.cs](\Assets\Scripts\SocketServer.cs).
+The communication between the front-end and the back-end is made possible using **Socket**. Specifically, a **Unity C# server** and a **Python client** are setup to transfer data through a TCP/IP connection. The details of this part of implementation can be referred to [SocketServer.cs](\Assets\Scripts\SocketServer.cs).
 
 The socket endpoint is set at:
 
