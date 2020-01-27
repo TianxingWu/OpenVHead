@@ -35,7 +35,7 @@ To cite this repo, please reference the name "OpenVHead" with the project link [
 
 
 ## 3. Usage
-### 3.1 Quit Start
+### 3.1 Quick start
 1. Configure the environment. You may use pip to install the required packages. The .whl file of opencv-python 3.4.0 and dlib 19.7.0 packages can be downloaded from [here](https://pypi.org/project/opencv-python/3.4.0.12/#files) and [here](https://pypi.org/project/dlib/19.7.0/#files). Note that you should choose the appropriate version.
 
 2. Clone the repository to your workspace. You can also download the .zip file of the [latest release](https://github.com/TianxingWu/OpenVHead/releases/latest) or older versions from [Release](https://github.com/TianxingWu/OpenVHead/releases).
@@ -50,7 +50,7 @@ To cite this repo, please reference the name "OpenVHead" with the project link [
 
 7. Press the Play button again to stop the program. It's not recommended to press the "Stop Thread" button since it seems to cause bugs from time to time. 
 
-### 3.2 Model Selection
+### 3.2 Model selection
 This system now has two character models with customized parameter settings. To change the character model, select the corresponding GameObject in the Scene hierarchy and unhide it by clicking on the toggle next to the object's name in the inspector, while the other GameObject should be hide. For example, if you want to change from model 1 to model 2, the settings should look like this:
 
 <p align="center">
@@ -74,7 +74,23 @@ Once the FBX file is ready, you should do the following steps to get it to work:
 
 6. Unhide your model and hide other models as is instructed in [3.2](#3.2-Model-Selection). Enjoy!
 
-### 3.4 Debug mode
+### 3.4 Green screen mode
+With the green screen mode, you can attach your virtual character to other contents (e.g. a game window) to do real-time streaming with the help of OBS (Open Broadcaster Software).
+
+In order to switch to green screen mode, just select the GameObject "Main Camera" and set the option "Clear Flags" from "Skybox" to "Solid Color". The RGB value of the background has already been set to (0,255,0). By doing these steps, you are expected to see something like this:
+
+<p align="center">
+    <img width="350" img src="./Figures/green_screen.jpg">
+</p>
+
+Now all what you have to do is to capture the windows in OBS, crop and resize them, then add a filter for the Unity Window to filter out the green background.
+
+A typical use case is shown below:
+<p align="center">
+    <img width="600" img src="./Figures/gaming.jpg">
+</p>
+
+### 3.5 Debug mode
 To make it easier to tune the control parameters, a debug mode is offered to visualize some of them. You can enable this mode by unhiding the child GameObjects of Canvas: RightData and LeftData. You would then see the real time plotting as follows:
 
 <p align="center">
