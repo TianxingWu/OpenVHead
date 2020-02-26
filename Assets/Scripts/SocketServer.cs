@@ -2,148 +2,153 @@
 
 using System;
 using System.Text;
-using System.Net.Sockets;
+using System.IO;
 using System.Net;
+using System.Net.Sockets;
+using System.Threading;
 
-public class SocketServer : MonoBehaviour
+public class SocketServer
 {
-    public static string data;
+    private string clientName = "client";
+    private string clientPath;
+    private string paramsPath;
 
-    System.Threading.Thread SocketThread;
-    volatile bool keepReading = false;
-
-    // Use this for initialization
-    void Start()
+    private Thread socketThread;
+    private readonly ManualResetEvent _stopEvent = new ManualResetEvent(false);
+    private bool _running
     {
-        Application.runInBackground = true;      
+        get { return !_stopEvent.WaitOne(0); }
     }
-
-    public static void Execute(string command)// Execute cmd command
-    {
-        var processInfo = new System.Diagnostics.ProcessStartInfo("cmd.exe", "/S /C " + command)
-        {
-            CreateNoWindow = true,
-            UseShellExecute = true,
-            WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
-        };
-
-        System.Diagnostics.Process.Start(processInfo);
-    }
-
-    public void StartServer()
-    {
-        SocketThread = new System.Threading.Thread(NetworkCode);
-        SocketThread.IsBackground = true;
-        SocketThread.Start();
-        
-        Execute("cd PythonScript & python visual_measurement.py");// Execute python client script
-    }
-
-
-
+    
+    private Socket listener;
     private string GetIPAddress()
     {
-        string localIP = "127.0.0.1";
-        return localIP;
+        return "127.0.0.1";
+    }
+    
+    public static string data;
+
+    // Initialization
+    public SocketServer()
+    {
+        // Find Python client's working directory
+        clientPath = string.Join(Path.DirectorySeparatorChar.ToString(), new string[] {
+            Environment.CurrentDirectory, "PythonScript", "dist", "client", clientName + ".exe"
+        });
+        paramsPath = string.Join(Path.DirectorySeparatorChar.ToString(), new string[] {
+            Environment.CurrentDirectory, "PythonScript", "data", "shape_predictor_68_face_landmarks.dat"
+        });
+
+        // Create a new thread
+        socketThread = new Thread(ReceiveData);
+        socketThread.IsBackground = true;
+        socketThread.Start();
+
+        // Host running the application. Port: 1755.
+        Debug.Log("Ip " + GetIPAddress().ToString());
+        IPAddress[] ipArray = Dns.GetHostAddresses(GetIPAddress());
+        IPEndPoint localEndPoint = new IPEndPoint(ipArray[0], 1755);
+
+        // Create a TCP/IP socket.
+        listener = new Socket(ipArray[0].AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+        // Bind the socket to the local endpoint and listen for incoming connections.
+        listener.Bind(localEndPoint);
+        listener.Listen(10);
+
+
+        
     }
 
 
-    Socket listener;
-    Socket handler;
-
-    void NetworkCode()
+    // Start the thread
+    public void Start()
     {
-        // Data buffer for incoming data.
-        byte[] bytes = new Byte[1024];
+        // Set a flag to tell if the thread is running; reset it when the thread starts
+        _stopEvent.Reset();
+        
+        StartClient(clientPath, paramsPath);
+        
+    }
 
-        // Host running the application.
-        Debug.Log("Ip " + GetIPAddress().ToString());
-        IPAddress[] ipArray = Dns.GetHostAddresses(GetIPAddress());
-        IPEndPoint localEndPoint = new IPEndPoint(ipArray[0], 1755);//端口为1755
 
-        // Create a TCP/IP socket.
-        listener = new Socket(ipArray[0].AddressFamily,
-            SocketType.Stream, ProtocolType.Tcp);
+    // Block the thread
+    public void Stop()
+    {
+        _stopEvent.Set();
 
-        // Bind the socket to the local endpoint and 
-        // listen for incoming connections.
+        StopClient(clientName);
 
-        try
+        listener.Shutdown(SocketShutdown.Both);
+        listener.Close();
+        Debug.Log("Disconnected!");
+    }
+
+
+    // Start Python client
+    private void StartClient(string path, string param)
+    {
+        Debug.Log(path);
+        System.Diagnostics.Process.Start(path, param);
+    }
+
+    // Stop Python client
+    private void StopClient(string name)
+    {
+        System.Diagnostics.Process[] myProcesses = System.Diagnostics.Process.GetProcesses();
+        foreach (System.Diagnostics.Process myProcess in myProcesses)
         {
-            listener.Bind(localEndPoint);
-            listener.Listen(10);
+            if (name == myProcess.ProcessName) myProcess.Kill();
+        }
+    }
+    
 
-            // Start listening for connections.
-            while (true)
-            {
-                keepReading = true;
+    // Receive data from client
+    private void ReceiveData()
+    {
+        // Start listening for connections
+        while (_running)
+        {
+            try {
+                // Data buffer for incoming data
+                byte[] bytes = new Byte[1024];
 
-                // Program is suspended while waiting for an incoming connection.
+                // Program is suspended while waiting for an incoming connection
                 Debug.Log("Waiting for Connection");
 
-                handler = listener.Accept();
+                Socket handler = listener.Accept();
                 Debug.Log("Client Connected");
                 data = null;
 
-                // An incoming connection needs to be processed.
-                while (keepReading)
+                // An incoming connection needs to be processed
+                while (true)
                 {
                     bytes = new byte[1024];
                     int bytesRec = handler.Receive(bytes);
-                    Debug.Log("Received from Server");
+                    // Debug.Log("Received from Server");
 
                     if (bytesRec <= 0)
                     {
-                        keepReading = false;
                         handler.Disconnect(true);
                         break;
                     }
 
                     data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                    
                     string[] tempdata = data.Split(':');
 
-                    if (data.IndexOf("<EOF>") > -1)
-                    {
-                        break;
-                    }
-
+                    if (data.IndexOf("<EOF>") > -1) break;
                     System.Threading.Thread.Sleep(1);
                 }
 
+                handler.Shutdown(SocketShutdown.Both);
+                handler.Close();
                 System.Threading.Thread.Sleep(1);
             }
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.ToString());
-        }
-    }
-
-    void StopServer()
-    {
-        keepReading = false;
-
-        //stop thread
-        if (SocketThread != null)
-        {
-            //listener.Shutdown(SocketShutdown.Both);
-            //listener.Close();
-            SocketThread.Abort();
-        }
-
-        if (handler != null && handler.Connected)
-        {
-            handler.Disconnect(false);
-            Debug.Log("Disconnected!");
+            catch (Exception e) {  
+                Debug.Log(e.ToString());  
+            }  
         }
     }
-
-    public void OnDisable()
-    {
-        StopServer();
-    }
-
 
 }
 

@@ -148,7 +148,7 @@ public class ParameterServer : MonoBehaviour
         }
         catch(Exception)
         {
-            Debug.Log("No Parameter Received.");
+            // Debug.Log("No Parameter Received.");
         }
 
         

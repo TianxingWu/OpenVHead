@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44922596, g: 0.49929875, b: 0.5757126, a: 1}
+  m_IndirectSpecularColor: {r: 0.44922584, g: 0.49929774, b: 0.57571137, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -657,7 +657,7 @@ MonoBehaviour:
   theLeftEye: {fileID: 172950448}
   theRightEye: {fileID: 2010548986}
   theMouth: {fileID: 1896437108}
---- !u!1 &1158503066
+--- !u!1 &856664355
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -665,36 +665,36 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1158503068}
-  - component: {fileID: 1158503067}
+  - component: {fileID: 856664357}
+  - component: {fileID: 856664356}
   m_Layer: 0
-  m_Name: SocketServer
+  m_Name: WidgetEvents
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1158503067
+--- !u!114 &856664356
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158503066}
+  m_GameObject: {fileID: 856664355}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b054c7b25484f264a8ad4e0f95c1dd33, type: 3}
+  m_Script: {fileID: 11500000, guid: 5557ee5495b2c084f9be5a095d2cffb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1158503068
+--- !u!4 &856664357
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158503066}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13, y: 29, z: 0}
+  m_GameObject: {fileID: 856664355}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -779,8 +779,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1158503067}
-        m_MethodName: StartServer
+      - m_Target: {fileID: 856664356}
+        m_MethodName: OnStartButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14625,7 +14625,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Abort Thread
+  m_Text: Pause Thread
 --- !u!222 &1580795581
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14902,7 +14902,7 @@ GameObject:
   - component: {fileID: 1964189480}
   - component: {fileID: 1964189479}
   m_Layer: 5
-  m_Name: AbortButton
+  m_Name: PauseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14968,8 +14968,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1158503067}
-        m_MethodName: OnDisable
+      - m_Target: {fileID: 856664356}
+        m_MethodName: OnPauseButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
