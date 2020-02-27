@@ -13,23 +13,21 @@ import socket
 
 class PyClient():
 
-    ip_addr = "127.0.0.1"
-    ip_port = 1755
-
-    def __init__(self):
-        self.client = socket.socket()
-        self.connect()
+    def __init__(self, host:str, port:int):
+        self._host = host
+        self._port = port
+        self._client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._connect()
     
-    def connect(self):
+    def _connect(self):
         try:
-            self.client.connect((self.ip_addr, self.ip_port))
-            print("ERROR: Socket connected, listening on %s:%d...\n" % (self.ip_addr, self.ip_port))
+            self._client.connect((self._host, self._port))
+            print("Socket connected, listening on %s:%d...\n" % (self._host, self._port))
         except:
-            print("ERROR: No socket connection!\n")
-            sys.exit(0)
+            print("ERROR: No socket connection!")
 
     def send(self, data:str, encoding:str="utf-8"):
         try:
-            self.client.send(data.encode(encoding))
+            self._client.send(data.encode(encoding))
         except:
-            print("ERROR: Failed to send data to server!\n")
+            print("ERROR: Failed to send data to server!")

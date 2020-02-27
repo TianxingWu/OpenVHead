@@ -1,1 +1,1 @@
-pyinstaller --onedir --windowed --name=client visual_measurement.py
+pyinstaller --onedir --windowed --name=client -y __main__.py
