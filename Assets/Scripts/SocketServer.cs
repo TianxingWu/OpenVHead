@@ -20,7 +20,6 @@ public class SocketServer
         get { return !_stopEvent.WaitOne(0); }
     }
     
-    private Socket listener;
     private string GetIPAddress()
     {
         return "127.0.0.1";
@@ -38,50 +37,27 @@ public class SocketServer
         paramsPath = string.Join(Path.DirectorySeparatorChar.ToString(), new string[] {
             Environment.CurrentDirectory, "PythonScript", "data", "shape_predictor_68_face_landmarks.dat"
         });
-
-        // Create a new thread
-        socketThread = new Thread(ReceiveData);
-        socketThread.IsBackground = true;
-        socketThread.Start();
-
-        // Host running the application. Port: 1755.
-        Debug.Log("Ip " + GetIPAddress().ToString());
-        IPAddress[] ipArray = Dns.GetHostAddresses(GetIPAddress());
-        IPEndPoint localEndPoint = new IPEndPoint(ipArray[0], 1755);
-
-        // Create a TCP/IP socket.
-        listener = new Socket(ipArray[0].AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-        // Bind the socket to the local endpoint and listen for incoming connections.
-        listener.Bind(localEndPoint);
-        listener.Listen(10);
-
-
-        
     }
 
 
     // Start the thread
     public void Start()
     {
-        // Set a flag to tell if the thread is running; reset it when the thread starts
+        // Reset the flag to start receiving data from the python client
         _stopEvent.Reset();
         
-        StartClient(clientPath, paramsPath);
-        
+        // Create a new thread
+        socketThread = new Thread(ReceiveData);
+        socketThread.IsBackground = true;
+        socketThread.Start();
     }
 
 
     // Block the thread
     public void Stop()
     {
+        // Set the flag to prevent receiving data from the python client
         _stopEvent.Set();
-
-        StopClient(clientName);
-
-        listener.Shutdown(SocketShutdown.Both);
-        listener.Close();
-        Debug.Log("Disconnected!");
     }
 
 
@@ -91,6 +67,7 @@ public class SocketServer
         Debug.Log(path);
         System.Diagnostics.Process.Start(path, param);
     }
+
 
     // Stop Python client
     private void StopClient(string name)
@@ -106,6 +83,20 @@ public class SocketServer
     // Receive data from client
     private void ReceiveData()
     {
+        // Host running the application. Port: 1755.
+        IPAddress[] ipArray = Dns.GetHostAddresses(GetIPAddress());
+        IPEndPoint localEndPoint = new IPEndPoint(ipArray[0], 1755);
+
+        // Create a TCP/IP socket.
+        Socket listener = new Socket(ipArray[0].AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+        // Bind the socket to the local endpoint and listen for incoming connections.
+        listener.Bind(localEndPoint);
+        listener.Listen(10);
+
+        // Start the python client
+        StartClient(clientPath, paramsPath);
+        
         // Start listening for connections
         while (_running)
         {
@@ -121,7 +112,7 @@ public class SocketServer
                 data = null;
 
                 // An incoming connection needs to be processed
-                while (true)
+                while (_running)
                 {
                     bytes = new byte[1024];
                     int bytesRec = handler.Receive(bytes);
@@ -135,19 +126,24 @@ public class SocketServer
 
                     data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
                     string[] tempdata = data.Split(':');
-
                     if (data.IndexOf("<EOF>") > -1) break;
-                    System.Threading.Thread.Sleep(1);
+                    
+                    // System.Threading.Thread.Sleep(1);
                 }
-
-                handler.Shutdown(SocketShutdown.Both);
+                // System.Threading.Thread.Sleep(1);
                 handler.Close();
-                System.Threading.Thread.Sleep(1);
             }
             catch (Exception e) {  
                 Debug.Log(e.ToString());  
-            }  
+            }
         }
+
+        // Shut down the client
+        StopClient(clientName);
+
+        // Shut down the server
+        listener.Close();
+        Debug.Log("Disconnected!");
     }
 
 }

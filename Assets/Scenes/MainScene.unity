@@ -14625,7 +14625,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Pause Thread
+  m_Text: Stop Thread
 --- !u!222 &1580795581
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14902,7 +14902,7 @@ GameObject:
   - component: {fileID: 1964189480}
   - component: {fileID: 1964189479}
   m_Layer: 5
-  m_Name: PauseButton
+  m_Name: StopButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
