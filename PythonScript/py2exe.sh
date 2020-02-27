@@ -1,0 +1,1 @@
+pyinstaller --onedir --windowed --name=client -y __main__.py
