@@ -36,7 +36,7 @@ To cite this repo, please reference the name "OpenVHead" with the project link [
 
 ## 3. Usage
 ### 3.1 Quick start
-1. Configure the environment. You may use pip to install the required packages. The .whl file of opencv-python 3.4.0 and dlib 19.7.0 packages can be downloaded from [here](https://pypi.org/project/opencv-python/3.4.0.12/#files) and [here](https://pypi.org/project/dlib/19.7.0/#files). Note that you should choose the appropriate version.
+1. Configure the environment. You may use pip to install the required packages. The .whl file of opencv-python 3.4.0 and dlib 19.7.0 packages can be downloaded from [here](https://pypi.org/project/opencv-python/3.4.0.12/#files) and [here](https://pypi.org/project/dlib/19.7.0/#files). Note that you should choose the appropriate version. For example, if you are using python 3.6 on Windows x64 system, then download the "xxxx-cp36-cp36m-win_amd64.whl" version.
 
 2. Clone the repository to your workspace. You can also download the .zip file of the [latest release](https://github.com/TianxingWu/OpenVHead/releases/latest) or older versions from [Release](https://github.com/TianxingWu/OpenVHead/releases).
 
@@ -263,7 +263,7 @@ I would also like to thank my friend [@Arsennnic](https://github.com/Arsennnic) 
 - [x] New blinking function
 - [ ] Gaze tracking
 - [ ] Facial expression classification
-- [ ] Physical engine for other components: hair, headwear(piukupiuku), etc.
+- [ ] Physical engine for other components: hair, headwear(piuku-piuku), etc.
 
 ## 8. References
 - [1] Tereza Soukupova´ and Jan Cˇ ech. Real-Time Eye Blink Detection using Facial Landmarks. 21st Computer Vision Winter Workshop, February 2016.
