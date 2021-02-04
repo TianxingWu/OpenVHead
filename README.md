@@ -12,7 +12,7 @@ This is an on-going project to build a vision-based head motion capture system f
 
 Let's try it on your own! Feel free to add new functions to the project or just play around with it and have fun. Please star :star: this project if you like it! :blush:
 
-The technical details are described in section [4](#4.-Method), which gives you an overview of how this system works. It's OK to skip this part if you are not interest in them.
+The technical details are described in section [4](#4-Method), which gives you an overview of how this system works. It's OK to skip this part if you are not interest in them.
 
 To cite this repo, please reference the name "OpenVHead" with the project link [here](https://github.com/TianxingWu/OpenVHead).
 
@@ -72,7 +72,7 @@ Once the FBX file is ready, you should do the following steps to get it to work:
 
 5. Change the values in "Blend Shapes Controller" according to the number of the blend shapes that you want to control. Note that the blend shapes are numbered from 0.
 
-6. Unhide your model and hide other models as is instructed in [3.2](#3.2-Model-Selection). Enjoy!
+6. Unhide your model and hide other models as is instructed in [3.2](#32-Model-selection). Enjoy!
 
 ### 3.4 Green screen mode
 With the green screen mode, you can attach your virtual character to other contents (e.g. a game window) to do real-time streaming with the help of OBS (Open Broadcaster Software).
@@ -99,7 +99,7 @@ To make it easier to tune the control parameters, a debug mode is offered to vis
 
 The displayed data is set as the eyes' openness value for the Kizuna AI model by default. You can change the data by modify the "Data Select" number in the Inspector window of each aforementioned GameObject.
 
-If you want to monitor the output of the Python Script, comment the following line in [SocketServer.cs](\Assets\Scripts\SocketServer.cs)
+If you want to monitor the output of the Python Script, comment the following line in [SocketServer.cs](/Assets/Scripts/SocketServer.cs)
 
 ```
 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
@@ -122,7 +122,7 @@ Specifically, two Kalman filters are applied to the x-coordinate and y-coordinat
 
 To make the tracking result even more smooth, the state vector of the Kalman filter is then sent to a **mean filter** which has a window size of 5 (frames).
 
-Note: The landmarks used for [4.1.3](4.1.3-Facial-expression-features-extraction) are the original detected ones without filtering, since the filter would bring too much delay and ruin the sensitivity of facial expression measures. A control method is taken at the back-end instead to increase robustness without too much cost of delay. (See [4.2.2](#4.2.2-Facial-expression-control))
+Note: The landmarks used for [4.1.3](#413-Facial-expression-features-extraction) are the original detected ones without filtering, since the filter would bring too much delay and ruin the sensitivity of facial expression measures. A control method is taken at the back-end instead to increase robustness without too much cost of delay. (See [4.2.2](#422-Facial-expression-control))
 
 #### 4.1.2 Pose estimation
 The position and orientation of an object in 3D scene can be estimated using a monocular camera through **PnP (Perspective-n-Point)** measurement. Rather than write a piece of my own, I decided to use the built-in function offered by OpenCV since it has different algorithms to choose. For this part of implementation, I refer to Satya Mallick's blog [Head Pose Estimation using OpenCV and Dlib](https://www.learnopencv.com/head-pose-estimation-using-opencv-and-dlib/) and you can find more theoretical details there.
@@ -134,7 +134,7 @@ However, please note that I have modified some part of the implementation to be 
 - The algorithm to solve PnP is set to **DLS** rather than the default one
 
 #### 4.1.3 Facial expression features extraction
-Several studies have been done to extract facial expression features from face landmarks. One of the mostly used feature for eye-blinking detection is called Eye-Aspect-Ratio [[1](#8.-References)] as shown below:
+Several studies have been done to extract facial expression features from face landmarks. One of the mostly used feature for eye-blinking detection is called Eye-Aspect-Ratio [[1](#8-References)] as shown below:
 
 <p align="center">
     <img width="350" img src="./Figures/EAR.jpg">
@@ -166,7 +166,7 @@ Before the computed quaternions are applied to the model, the four parameters ar
 
 #### 4.2.2 Facial expression control
 ##### 4.2.2.1. Dealing with noise
-As is mentioned in [4.1.1](#4.1.1-Face-landmarks-tracking), the landmarks used for facial expressions are un-filtered due to some considerations, as a result the measures we got here (<img alt="$leftEyeWid$" src="Formulas/ccc5f286e35410145c5658eb7b8a9394.svg" align="middle" width="90.04908pt" height="22.831379999999992pt"/>, <img alt="$rightEyeWid$" src="Formulas/2ca4537df1e5007e6bd86c4ee45b02ec.svg" align="middle" width="98.78681999999999pt" height="22.831379999999992pt"/>, <img alt="$mouthWid$" src="Formulas/bf43656f79943e5a05284efb2ac129e9.svg" align="middle" width="79.2462pt" height="22.831379999999992pt"/>, etc.) are quite noisy. To solve this problem, I think up an interesting method that turn it into a **control problem**.
+As is mentioned in [4.1.1](#411-Face-landmarks-tracking), the landmarks used for facial expressions are un-filtered due to some considerations, as a result the measures we got here (<img alt="$leftEyeWid$" src="Formulas/ccc5f286e35410145c5658eb7b8a9394.svg" align="middle" width="90.04908pt" height="22.831379999999992pt"/>, <img alt="$rightEyeWid$" src="Formulas/2ca4537df1e5007e6bd86c4ee45b02ec.svg" align="middle" width="98.78681999999999pt" height="22.831379999999992pt"/>, <img alt="$mouthWid$" src="Formulas/bf43656f79943e5a05284efb2ac129e9.svg" align="middle" width="79.2462pt" height="22.831379999999992pt"/>, etc.) are quite noisy. To solve this problem, I think up an interesting method that turn it into a **control problem**.
 
 Specifically, I take the **input measure** as the **desired position** of a **mass**, and an **input force** given by **incomplete derivative PD control** is attached to the mass. Then the **actual position** of the mass is used as the **output measure**.
 
@@ -212,7 +212,7 @@ Here are two frequency response diagrams of the system with ALPHA = 0 and ALPHA 
     <img src="./Figures/frequency_response.png">
 </p>
 
-More details of the implementation can be referred to [ParameterServer.cs](\Assets\Scripts\ParameterServer.cs).
+More details of the implementation can be referred to [ParameterServer.cs](/Assets/Scripts/ParameterServer.cs).
 
 ##### 4.2.2.2 Blend shape functions
 To make the facial expression of the virtual character more realistic, I write customized deformation functions for the blend shapes of model 2: **Blinking function**, **Shocked function** and **Mouth deformation function**. Since the function may vary according to the specific model, I'll just list the most representative and important one here, which is the eyes' **Blinking function**. It has two versions at present.
@@ -238,7 +238,7 @@ The following figure demonstrates the difference of the system response without 
 
 
 ### 4.3 Socket communication
-The communication between the front-end and the back-end is made possible using **Socket**. Specifically, a **Unity C# server** and a **Python client** are setup to transfer data through a TCP/IP connection. The details of this part of implementation can be referred to [SocketServer.cs](\Assets\Scripts\SocketServer.cs).
+The communication between the front-end and the back-end is made possible using **Socket**. Specifically, a **Unity C# server** and a **Python client** are setup to transfer data through a TCP/IP connection. The details of this part of implementation can be referred to [SocketServer.cs](/Assets/Scripts/SocketServer.cs).
 
 The socket endpoint is set at:
 
