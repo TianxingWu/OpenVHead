@@ -154,7 +154,7 @@ This measure is quite simple and straight forward. However, it does not have goo
 The core idea is to define a reference distance which is insensitive to the rotation.
 
 ### 4.2 Back-end (Unity C#)
-After the position, rotation and feature vectors are got at the Python front-end, they are then transferred to the C# back-end through socket, which is described in [4.3](#4.3-Socket-communication). With this collection of information, several steps are taken here to actually make the virtual character move up properly. The implementation details are slightly different between the two models. Most of time I will only take the model 2 as the example because it has more generality.
+After the position, rotation and feature vectors are got at the Python front-end, they are then transferred to the C# back-end through socket, which is described in [4.3](#43-Socket-communication). With this collection of information, several steps are taken here to actually make the virtual character move up properly. The implementation details are slightly different between the two models. Most of time I will only take the model 2 as the example because it has more generality.
 
 #### 4.2.1 Pose control
 In fact, theoretically you can directly apply the estimated position vector and rotation quaternions to the model if you use something like model 1 (pure head). However, since I haven't implemented inverse kinematics to the more generalized model like model 2, for these models the position is fixed, which means you can only control the rotation of it. 
